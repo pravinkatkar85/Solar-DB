@@ -11,8 +11,8 @@ Reviewed sources:
 - `Solar-DB/SQLScripts/03_seed_data.sql`
 - `Solar-DB/DB-Docs/DB_REQUIREMENTS.md`
 - `Solar-DB/reference-data/SUMMARY.md`
-- `Documents/BRD.md`
-- `Documents/DB_AUDIT_REPORT.md`
+- `Solar-Docs/BRD.md`
+- `Solar-Docs/DB_AUDIT_REPORT.md`
 
 Current database status: the seven tables below have zero rows.
 `Solar-DB/SQLScripts/04_seed_development_reference_data.sql` now contains the

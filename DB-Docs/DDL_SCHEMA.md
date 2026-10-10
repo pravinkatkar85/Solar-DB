@@ -2,7 +2,7 @@
 
 **Status:** Review only. Do **not** execute until approved and copied to `01_schema.sql`.  
 **Database:** `SolarDB` · **Schema:** `solar_app` · **Owner:** `solar_app_user` · **Engine:** PostgreSQL 16+  
-**Sources:** `Documents/BRD.md` (13 modules), `DB_REQUIREMENTS.md`, `DB-Design.md` v1.4  
+**Sources:** `Solar-Docs/BRD.md` (13 modules), `DB_REQUIREMENTS.md`, `DB-Design.md` v1.4  
 
 ### Change in this revision
 

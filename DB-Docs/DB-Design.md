@@ -5,7 +5,7 @@
 **Owner:** `solar_app_user`  
 **Engine:** PostgreSQL 16+  
 **Architecture:** Database-centric (business logic in PL/pgSQL functions; Node.js is a thin JSON proxy; Flutter is the client)  
-**Related specs:** `.cursorrules`, `DB_REQUIREMENTS.md`, `Documents/BRD.md`  
+**Related specs:** `.cursorrules`, `DB_REQUIREMENTS.md`, `Solar-Docs/BRD.md`  
 **DDL for review:** `Solar-DB/DDL_SCHEMA.md`  
 **Physical execute script (after approval):** `Solar-DB/01_schema.sql`
 

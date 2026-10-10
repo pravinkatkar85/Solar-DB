@@ -1,0 +1,17 @@
+[
+  {
+    "country_id": 1,
+    "country_code": "IN",
+    "country_name": "India",
+    "phone_code": "+91",
+    "national_phone_min_length": 10,
+    "national_phone_max_length": 10,
+    "national_phone_regex": "^[6-9][0-9]{9}$",
+    "postal_code_regex": "^[1-9][0-9]{5}$",
+    "tax_registration_label": "GSTIN",
+    "tax_registration_regex": null,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  }
+]

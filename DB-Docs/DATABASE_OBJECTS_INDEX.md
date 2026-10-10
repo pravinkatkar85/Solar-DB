@@ -1,0 +1,289 @@
+# Database Objects Index
+
+- Database: `SolarDB`
+- Schema: `solar_app`
+- Connection check: `SolarDB | solar_app_user`
+- Exported at: 2026-10-10 19:33:54 GMT+5:30
+
+## Tables
+
+Tables found: **61**
+
+- [`amc_contract_details`](Tables/solar_app.amc_contract_details.md)
+- [`calculator_estimate_details`](Tables/solar_app.calculator_estimate_details.md)
+- [`complaint_ticket_details`](Tables/solar_app.complaint_ticket_details.md)
+- [`customer_details`](Tables/solar_app.customer_details.md)
+- [`equipment_details`](Tables/solar_app.equipment_details.md)
+- [`followup_details`](Tables/solar_app.followup_details.md)
+- [`invoice_details`](Tables/solar_app.invoice_details.md)
+- [`invoice_line_details`](Tables/solar_app.invoice_line_details.md)
+- [`invoice_tax_details`](Tables/solar_app.invoice_tax_details.md)
+- [`job_assignment_details`](Tables/solar_app.job_assignment_details.md)
+- [`job_checklist_response_details`](Tables/solar_app.job_checklist_response_details.md)
+- [`job_media_details`](Tables/solar_app.job_media_details.md)
+- [`job_signoff_details`](Tables/solar_app.job_signoff_details.md)
+- [`kyc_document_details`](Tables/solar_app.kyc_document_details.md)
+- [`lead_details`](Tables/solar_app.lead_details.md)
+- [`log_api_execution`](Tables/solar_app.log_api_execution.md)
+- [`log_notification_delivery`](Tables/solar_app.log_notification_delivery.md)
+- [`log_otp_attempts`](Tables/solar_app.log_otp_attempts.md)
+- [`log_sql_functions`](Tables/solar_app.log_sql_functions.md)
+- [`log_user_sessions`](Tables/solar_app.log_user_sessions.md)
+- [`notification_details`](Tables/solar_app.notification_details.md)
+- [`order_details`](Tables/solar_app.order_details.md)
+- [`order_line_details`](Tables/solar_app.order_line_details.md)
+- [`organization_details`](Tables/solar_app.organization_details.md)
+- [`payment_details`](Tables/solar_app.payment_details.md)
+- [`payment_milestone_details`](Tables/solar_app.payment_milestone_details.md)
+- [`product_details`](Tables/solar_app.product_details.md)
+- [`product_enquiry_details`](Tables/solar_app.product_enquiry_details.md)
+- [`product_media_details`](Tables/solar_app.product_media_details.md)
+- [`quote_details`](Tables/solar_app.quote_details.md)
+- [`quote_line_details`](Tables/solar_app.quote_line_details.md)
+- [`ref_amc_plans`](Tables/solar_app.ref_amc_plans.md)
+- [`ref_business_parameters`](Tables/solar_app.ref_business_parameters.md)
+- [`ref_checklist_items`](Tables/solar_app.ref_checklist_items.md)
+- [`ref_cities`](Tables/solar_app.ref_cities.md)
+- [`ref_countries`](Tables/solar_app.ref_countries.md)
+- [`ref_currencies`](Tables/solar_app.ref_currencies.md)
+- [`ref_data`](Tables/solar_app.ref_data.md)
+- [`ref_data_categories`](Tables/solar_app.ref_data_categories.md)
+- [`ref_discoms`](Tables/solar_app.ref_discoms.md)
+- [`ref_districts`](Tables/solar_app.ref_districts.md)
+- [`ref_dropdown_config`](Tables/solar_app.ref_dropdown_config.md)
+- [`ref_office_locations`](Tables/solar_app.ref_office_locations.md)
+- [`ref_pincodes`](Tables/solar_app.ref_pincodes.md)
+- [`ref_states`](Tables/solar_app.ref_states.md)
+- [`ref_subsidy_schemes`](Tables/solar_app.ref_subsidy_schemes.md)
+- [`ref_subsidy_slabs`](Tables/solar_app.ref_subsidy_slabs.md)
+- [`ref_tax_rules`](Tables/solar_app.ref_tax_rules.md)
+- [`ref_visit_charge_slabs`](Tables/solar_app.ref_visit_charge_slabs.md)
+- [`service_milestone_details`](Tables/solar_app.service_milestone_details.md)
+- [`service_request_details`](Tables/solar_app.service_request_details.md)
+- [`site_details`](Tables/solar_app.site_details.md)
+- [`site_visit_details`](Tables/solar_app.site_visit_details.md)
+- [`spare_part_request_details`](Tables/solar_app.spare_part_request_details.md)
+- [`technician_details`](Tables/solar_app.technician_details.md)
+- [`ticket_media_details`](Tables/solar_app.ticket_media_details.md)
+- [`ticket_message_details`](Tables/solar_app.ticket_message_details.md)
+- [`ticket_status_history_details`](Tables/solar_app.ticket_status_history_details.md)
+- [`user_details`](Tables/solar_app.user_details.md)
+- [`user_site_access_details`](Tables/solar_app.user_site_access_details.md)
+- [`warranty_details`](Tables/solar_app.warranty_details.md)
+
+## Functions and procedures
+
+Functions/procedures found: **212**
+
+- `cash_dist(money, money)`
+- `date_dist(date, date)`
+- `float4_dist(real, real)`
+- `float8_dist(double precision, double precision)`
+- `gbt_bit_compress(internal)`
+- `gbt_bit_consistent(internal, bit, smallint, oid, internal)`
+- `gbt_bit_penalty(internal, internal, internal)`
+- `gbt_bit_picksplit(internal, internal)`
+- `gbt_bit_same(gbtreekey_var, gbtreekey_var, internal)`
+- `gbt_bit_sortsupport(internal)`
+- `gbt_bit_union(internal, internal)`
+- `gbt_bool_compress(internal)`
+- `gbt_bool_consistent(internal, boolean, smallint, oid, internal)`
+- `gbt_bool_fetch(internal)`
+- `gbt_bool_penalty(internal, internal, internal)`
+- `gbt_bool_picksplit(internal, internal)`
+- `gbt_bool_same(gbtreekey2, gbtreekey2, internal)`
+- `gbt_bool_sortsupport(internal)`
+- `gbt_bool_union(internal, internal)`
+- `gbt_bpchar_compress(internal)`
+- `gbt_bpchar_consistent(internal, character, smallint, oid, internal)`
+- `gbt_bpchar_sortsupport(internal)`
+- `gbt_bytea_compress(internal)`
+- `gbt_bytea_consistent(internal, bytea, smallint, oid, internal)`
+- `gbt_bytea_penalty(internal, internal, internal)`
+- `gbt_bytea_picksplit(internal, internal)`
+- `gbt_bytea_same(gbtreekey_var, gbtreekey_var, internal)`
+- `gbt_bytea_sortsupport(internal)`
+- `gbt_bytea_union(internal, internal)`
+- `gbt_cash_compress(internal)`
+- `gbt_cash_consistent(internal, money, smallint, oid, internal)`
+- `gbt_cash_distance(internal, money, smallint, oid, internal)`
+- `gbt_cash_fetch(internal)`
+- `gbt_cash_penalty(internal, internal, internal)`
+- `gbt_cash_picksplit(internal, internal)`
+- `gbt_cash_same(gbtreekey16, gbtreekey16, internal)`
+- `gbt_cash_sortsupport(internal)`
+- `gbt_cash_union(internal, internal)`
+- `gbt_date_compress(internal)`
+- `gbt_date_consistent(internal, date, smallint, oid, internal)`
+- `gbt_date_distance(internal, date, smallint, oid, internal)`
+- `gbt_date_fetch(internal)`
+- `gbt_date_penalty(internal, internal, internal)`
+- `gbt_date_picksplit(internal, internal)`
+- `gbt_date_same(gbtreekey8, gbtreekey8, internal)`
+- `gbt_date_sortsupport(internal)`
+- `gbt_date_union(internal, internal)`
+- `gbt_decompress(internal)`
+- `gbt_enum_compress(internal)`
+- `gbt_enum_consistent(internal, anyenum, smallint, oid, internal)`
+- `gbt_enum_fetch(internal)`
+- `gbt_enum_penalty(internal, internal, internal)`
+- `gbt_enum_picksplit(internal, internal)`
+- `gbt_enum_same(gbtreekey8, gbtreekey8, internal)`
+- `gbt_enum_sortsupport(internal)`
+- `gbt_enum_union(internal, internal)`
+- `gbt_float4_compress(internal)`
+- `gbt_float4_consistent(internal, real, smallint, oid, internal)`
+- `gbt_float4_distance(internal, real, smallint, oid, internal)`
+- `gbt_float4_fetch(internal)`
+- `gbt_float4_penalty(internal, internal, internal)`
+- `gbt_float4_picksplit(internal, internal)`
+- `gbt_float4_same(gbtreekey8, gbtreekey8, internal)`
+- `gbt_float4_sortsupport(internal)`
+- `gbt_float4_union(internal, internal)`
+- `gbt_float8_compress(internal)`
+- `gbt_float8_consistent(internal, double precision, smallint, oid, internal)`
+- `gbt_float8_distance(internal, double precision, smallint, oid, internal)`
+- `gbt_float8_fetch(internal)`
+- `gbt_float8_penalty(internal, internal, internal)`
+- `gbt_float8_picksplit(internal, internal)`
+- `gbt_float8_same(gbtreekey16, gbtreekey16, internal)`
+- `gbt_float8_sortsupport(internal)`
+- `gbt_float8_union(internal, internal)`
+- `gbt_inet_compress(internal)`
+- `gbt_inet_consistent(internal, inet, smallint, oid, internal)`
+- `gbt_inet_penalty(internal, internal, internal)`
+- `gbt_inet_picksplit(internal, internal)`
+- `gbt_inet_same(gbtreekey16, gbtreekey16, internal)`
+- `gbt_inet_sortsupport(internal)`
+- `gbt_inet_union(internal, internal)`
+- `gbt_int2_compress(internal)`
+- `gbt_int2_consistent(internal, smallint, smallint, oid, internal)`
+- `gbt_int2_distance(internal, smallint, smallint, oid, internal)`
+- `gbt_int2_fetch(internal)`
+- `gbt_int2_penalty(internal, internal, internal)`
+- `gbt_int2_picksplit(internal, internal)`
+- `gbt_int2_same(gbtreekey4, gbtreekey4, internal)`
+- `gbt_int2_sortsupport(internal)`
+- `gbt_int2_union(internal, internal)`
+- `gbt_int4_compress(internal)`
+- `gbt_int4_consistent(internal, integer, smallint, oid, internal)`
+- `gbt_int4_distance(internal, integer, smallint, oid, internal)`
+- `gbt_int4_fetch(internal)`
+- `gbt_int4_penalty(internal, internal, internal)`
+- `gbt_int4_picksplit(internal, internal)`
+- `gbt_int4_same(gbtreekey8, gbtreekey8, internal)`
+- `gbt_int4_sortsupport(internal)`
+- `gbt_int4_union(internal, internal)`
+- `gbt_int8_compress(internal)`
+- `gbt_int8_consistent(internal, bigint, smallint, oid, internal)`
+- `gbt_int8_distance(internal, bigint, smallint, oid, internal)`
+- `gbt_int8_fetch(internal)`
+- `gbt_int8_penalty(internal, internal, internal)`
+- `gbt_int8_picksplit(internal, internal)`
+- `gbt_int8_same(gbtreekey16, gbtreekey16, internal)`
+- `gbt_int8_sortsupport(internal)`
+- `gbt_int8_union(internal, internal)`
+- `gbt_intv_compress(internal)`
+- `gbt_intv_consistent(internal, interval, smallint, oid, internal)`
+- `gbt_intv_decompress(internal)`
+- `gbt_intv_distance(internal, interval, smallint, oid, internal)`
+- `gbt_intv_fetch(internal)`
+- `gbt_intv_penalty(internal, internal, internal)`
+- `gbt_intv_picksplit(internal, internal)`
+- `gbt_intv_same(gbtreekey32, gbtreekey32, internal)`
+- `gbt_intv_sortsupport(internal)`
+- `gbt_intv_union(internal, internal)`
+- `gbt_macad8_compress(internal)`
+- `gbt_macad8_consistent(internal, macaddr8, smallint, oid, internal)`
+- `gbt_macad8_fetch(internal)`
+- `gbt_macad8_penalty(internal, internal, internal)`
+- `gbt_macad8_picksplit(internal, internal)`
+- `gbt_macad8_same(gbtreekey16, gbtreekey16, internal)`
+- `gbt_macad8_sortsupport(internal)`
+- `gbt_macad8_union(internal, internal)`
+- `gbt_macad_compress(internal)`
+- `gbt_macad_consistent(internal, macaddr, smallint, oid, internal)`
+- `gbt_macad_fetch(internal)`
+- `gbt_macad_penalty(internal, internal, internal)`
+- `gbt_macad_picksplit(internal, internal)`
+- `gbt_macad_same(gbtreekey16, gbtreekey16, internal)`
+- `gbt_macad_union(internal, internal)`
+- `gbt_macaddr_sortsupport(internal)`
+- `gbt_numeric_compress(internal)`
+- `gbt_numeric_consistent(internal, numeric, smallint, oid, internal)`
+- `gbt_numeric_penalty(internal, internal, internal)`
+- `gbt_numeric_picksplit(internal, internal)`
+- `gbt_numeric_same(gbtreekey_var, gbtreekey_var, internal)`
+- `gbt_numeric_sortsupport(internal)`
+- `gbt_numeric_union(internal, internal)`
+- `gbt_oid_compress(internal)`
+- `gbt_oid_consistent(internal, oid, smallint, oid, internal)`
+- `gbt_oid_distance(internal, oid, smallint, oid, internal)`
+- `gbt_oid_fetch(internal)`
+- `gbt_oid_penalty(internal, internal, internal)`
+- `gbt_oid_picksplit(internal, internal)`
+- `gbt_oid_same(gbtreekey8, gbtreekey8, internal)`
+- `gbt_oid_sortsupport(internal)`
+- `gbt_oid_union(internal, internal)`
+- `gbt_text_compress(internal)`
+- `gbt_text_consistent(internal, text, smallint, oid, internal)`
+- `gbt_text_penalty(internal, internal, internal)`
+- `gbt_text_picksplit(internal, internal)`
+- `gbt_text_same(gbtreekey_var, gbtreekey_var, internal)`
+- `gbt_text_sortsupport(internal)`
+- `gbt_text_union(internal, internal)`
+- `gbt_time_compress(internal)`
+- `gbt_time_consistent(internal, time without time zone, smallint, oid, internal)`
+- `gbt_time_distance(internal, time without time zone, smallint, oid, internal)`
+- `gbt_time_fetch(internal)`
+- `gbt_time_penalty(internal, internal, internal)`
+- `gbt_time_picksplit(internal, internal)`
+- `gbt_time_same(gbtreekey16, gbtreekey16, internal)`
+- `gbt_time_sortsupport(internal)`
+- `gbt_time_union(internal, internal)`
+- `gbt_timetz_compress(internal)`
+- `gbt_timetz_consistent(internal, time with time zone, smallint, oid, internal)`
+- `gbt_ts_compress(internal)`
+- `gbt_ts_consistent(internal, timestamp without time zone, smallint, oid, internal)`
+- `gbt_ts_distance(internal, timestamp without time zone, smallint, oid, internal)`
+- `gbt_ts_fetch(internal)`
+- `gbt_ts_penalty(internal, internal, internal)`
+- `gbt_ts_picksplit(internal, internal)`
+- `gbt_ts_same(gbtreekey16, gbtreekey16, internal)`
+- `gbt_ts_sortsupport(internal)`
+- `gbt_ts_union(internal, internal)`
+- `gbt_tstz_compress(internal)`
+- `gbt_tstz_consistent(internal, timestamp with time zone, smallint, oid, internal)`
+- `gbt_tstz_distance(internal, timestamp with time zone, smallint, oid, internal)`
+- `gbt_uuid_compress(internal)`
+- `gbt_uuid_consistent(internal, uuid, smallint, oid, internal)`
+- `gbt_uuid_fetch(internal)`
+- `gbt_uuid_penalty(internal, internal, internal)`
+- `gbt_uuid_picksplit(internal, internal)`
+- `gbt_uuid_same(gbtreekey32, gbtreekey32, internal)`
+- `gbt_uuid_sortsupport(internal)`
+- `gbt_uuid_union(internal, internal)`
+- `gbt_var_decompress(internal)`
+- `gbt_var_fetch(internal)`
+- `gbt_varbit_sortsupport(internal)`
+- `gbtreekey16_in(cstring)`
+- `gbtreekey16_out(gbtreekey16)`
+- `gbtreekey2_in(cstring)`
+- `gbtreekey2_out(gbtreekey2)`
+- `gbtreekey32_in(cstring)`
+- `gbtreekey32_out(gbtreekey32)`
+- `gbtreekey4_in(cstring)`
+- `gbtreekey4_out(gbtreekey4)`
+- `gbtreekey8_in(cstring)`
+- `gbtreekey8_out(gbtreekey8)`
+- `gbtreekey_var_in(cstring)`
+- `gbtreekey_var_out(gbtreekey_var)`
+- `gist_translate_cmptype_btree(integer)`
+- `int2_dist(smallint, smallint)`
+- `int4_dist(integer, integer)`
+- `int8_dist(bigint, bigint)`
+- `interval_dist(interval, interval)`
+- `oid_dist(oid, oid)`
+- `time_dist(time without time zone, time without time zone)`
+- `ts_dist(timestamp without time zone, timestamp without time zone)`
+- `tstz_dist(timestamp with time zone, timestamp with time zone)`

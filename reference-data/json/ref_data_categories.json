@@ -1,0 +1,382 @@
+[
+  {
+    "category_id": 1,
+    "category_code": "USER_ROLES",
+    "category_name": "User Roles",
+    "category_desc": "App personas",
+    "sort_order": 1,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "category_id": 2,
+    "category_code": "APP_LANGUAGES",
+    "category_name": "App Languages",
+    "category_desc": "UI language",
+    "sort_order": 2,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "category_id": 3,
+    "category_code": "CONNECTION_TYPES",
+    "category_name": "Connection Types",
+    "category_desc": "DISCOM connection class",
+    "sort_order": 3,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "category_id": 4,
+    "category_code": "LEAD_STATUSES",
+    "category_name": "Lead Statuses",
+    "category_desc": "Sales pipeline",
+    "sort_order": 4,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "category_id": 5,
+    "category_code": "QUOTE_STATUSES",
+    "category_name": "Quote Statuses",
+    "category_desc": "Quotation lifecycle",
+    "sort_order": 5,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "category_id": 6,
+    "category_code": "SITE_VISIT_STATUSES",
+    "category_name": "Site Visit Statuses",
+    "category_desc": "Scheduled through done / charges",
+    "sort_order": 6,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "category_id": 7,
+    "category_code": "SITE_VISIT_PURPOSES",
+    "category_name": "Site Visit Purposes",
+    "category_desc": "Enquiry, installation, service, complaint, commissioning",
+    "sort_order": 7,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "category_id": 8,
+    "category_code": "DOCUMENT_TYPES",
+    "category_name": "KYC Document Types",
+    "category_desc": "Onboarding checklist",
+    "sort_order": 8,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "category_id": 9,
+    "category_code": "DOCUMENT_VERIFICATION_STATUSES",
+    "category_name": "Document Verification Statuses",
+    "category_desc": "Admin review badge",
+    "sort_order": 9,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "category_id": 10,
+    "category_code": "EQUIPMENT_TYPES",
+    "category_name": "Equipment Types",
+    "category_desc": "Asset register class",
+    "sort_order": 10,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "category_id": 11,
+    "category_code": "EQUIPMENT_BRANDS",
+    "category_name": "Equipment Brands",
+    "category_desc": "Panel/inverter/battery brands",
+    "sort_order": 11,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "category_id": 12,
+    "category_code": "PHASE_TYPES",
+    "category_name": "Phase Types",
+    "category_desc": "Inverter/connection phase",
+    "sort_order": 12,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "category_id": 13,
+    "category_code": "STRUCTURE_TYPES",
+    "category_name": "Structure Types",
+    "category_desc": "Mounting structure",
+    "sort_order": 13,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "category_id": 14,
+    "category_code": "WARRANTY_TYPES",
+    "category_name": "Warranty Types",
+    "category_desc": "Warranty vault",
+    "sort_order": 14,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "category_id": 15,
+    "category_code": "SERVICE_TYPES",
+    "category_name": "Service Types",
+    "category_desc": "Preventive service booking",
+    "sort_order": 15,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "category_id": 16,
+    "category_code": "SERVICE_SLOT_WINDOWS",
+    "category_name": "Service Slot Windows",
+    "category_desc": "Morning/afternoon",
+    "sort_order": 16,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "category_id": 17,
+    "category_code": "SERVICE_REQUEST_STATUSES",
+    "category_name": "Service Request Statuses",
+    "category_desc": "AMC/cleaning request",
+    "sort_order": 17,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "category_id": 18,
+    "category_code": "MILESTONE_STATUSES",
+    "category_name": "Free Service Milestone Statuses",
+    "category_desc": "Quarterly free visits",
+    "sort_order": 18,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "category_id": 19,
+    "category_code": "COMPLAINT_CATEGORIES",
+    "category_name": "Complaint Categories",
+    "category_desc": "Ticket issue class",
+    "sort_order": 19,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "category_id": 20,
+    "category_code": "COMPLAINT_SEVERITIES",
+    "category_name": "Complaint Severities",
+    "category_desc": "Priority",
+    "sort_order": 20,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "category_id": 21,
+    "category_code": "TICKET_STATUSES",
+    "category_name": "Ticket Statuses",
+    "category_desc": "Complaint stepper",
+    "sort_order": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "category_id": 22,
+    "category_code": "JOB_STATUSES",
+    "category_name": "Job Assignment Statuses",
+    "category_desc": "Technician queue",
+    "sort_order": 22,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "category_id": 23,
+    "category_code": "INVOICE_CATEGORIES",
+    "category_name": "Invoice Categories",
+    "category_desc": "Offline bill type (installation, AMC, spares, cleaning)",
+    "sort_order": 23,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "category_id": 24,
+    "category_code": "INVOICE_STATUSES",
+    "category_name": "Invoice Statuses",
+    "category_desc": "Offline bill AR status",
+    "sort_order": 24,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "category_id": 25,
+    "category_code": "PAYMENT_METHODS",
+    "category_name": "Payment Methods",
+    "category_desc": "Offline collection methods (no in-app gateway)",
+    "sort_order": 25,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "category_id": 26,
+    "category_code": "PAYMENT_STATUSES",
+    "category_name": "Payment Statuses",
+    "category_desc": "Offline payment record status",
+    "sort_order": 26,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "category_id": 27,
+    "category_code": "INSTALLATION_STATUSES",
+    "category_name": "Installation Statuses",
+    "category_desc": "Site pipeline",
+    "sort_order": 27,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "category_id": 28,
+    "category_code": "SITE_ACCESS_ROLES",
+    "category_name": "Site Access Roles",
+    "category_desc": "Multi-property access",
+    "sort_order": 28,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "category_id": 29,
+    "category_code": "PRODUCT_CATEGORIES",
+    "category_name": "Product Catalogue Categories",
+    "category_desc": "Sellable/related SKU class",
+    "sort_order": 29,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "category_id": 30,
+    "category_code": "PRODUCT_ENQUIRY_STATUSES",
+    "category_name": "Product Enquiry Statuses",
+    "category_desc": "Catalogue enquiry pipeline",
+    "sort_order": 30,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "category_id": 31,
+    "category_code": "USER_ACCOUNT_STATUSES",
+    "category_name": "User Account Statuses",
+    "category_desc": "Admin suspend/activate",
+    "sort_order": 31,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "category_id": 32,
+    "category_code": "ORDER_STATUSES",
+    "category_name": "Order Statuses",
+    "category_desc": "Admin order fulfilment",
+    "sort_order": 32,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "category_id": 33,
+    "category_code": "FOLLOWUP_TYPES",
+    "category_name": "Follow-up Types",
+    "category_desc": "Call, visit, WhatsApp, email",
+    "sort_order": 33,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "category_id": 34,
+    "category_code": "FOLLOWUP_STATUSES",
+    "category_name": "Follow-up Statuses",
+    "category_desc": "Admin task pipeline",
+    "sort_order": 34,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "category_id": 35,
+    "category_code": "REGISTRATION_SOURCES",
+    "category_name": "Registration Sources",
+    "category_desc": "Path A self-app vs Path B admin post-install",
+    "sort_order": 35,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "category_id": 36,
+    "category_code": "NOTIFICATION_TYPES",
+    "category_name": "Notification Types",
+    "category_desc": "In-app / push event catalogue",
+    "sort_order": 36,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "category_id": 37,
+    "category_code": "NOTIFICATION_CHANNELS",
+    "category_name": "Notification Channels",
+    "category_desc": "IN_APP vs PUSH (OTP SMS is separate)",
+    "sort_order": 37,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "category_id": 38,
+    "category_code": "NOTIFICATION_DELIVERY_STATUSES",
+    "category_name": "Notification Delivery Statuses",
+    "category_desc": "Push send queue",
+    "sort_order": 38,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  }
+]

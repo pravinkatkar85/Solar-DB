@@ -1,0 +1,702 @@
+[
+  {
+    "pincode_id": 1,
+    "pincode": "400001",
+    "city_id": 1,
+    "district_id": 418,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 2,
+    "pincode": "411001",
+    "city_id": 8,
+    "district_id": 426,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 3,
+    "pincode": "440001",
+    "city_id": 13,
+    "district_id": 420,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 4,
+    "pincode": "400601",
+    "city_id": 16,
+    "district_id": 433,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 5,
+    "pincode": "422001",
+    "city_id": 25,
+    "district_id": 423,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 6,
+    "pincode": "401202",
+    "city_id": 30,
+    "district_id": 424,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 7,
+    "pincode": "413001",
+    "city_id": 50,
+    "district_id": 432,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 8,
+    "pincode": "421302",
+    "city_id": 59,
+    "district_id": 433,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 9,
+    "pincode": "444601",
+    "city_id": 62,
+    "district_id": 403,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 10,
+    "pincode": "431601",
+    "city_id": 73,
+    "district_id": 421,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 11,
+    "pincode": "416416",
+    "city_id": 77,
+    "district_id": 429,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 12,
+    "pincode": "423203",
+    "city_id": 87,
+    "district_id": 423,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 13,
+    "pincode": "444001",
+    "city_id": 92,
+    "district_id": 402,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 14,
+    "pincode": "413512",
+    "city_id": 99,
+    "district_id": 417,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 15,
+    "pincode": "424001",
+    "city_id": 100,
+    "district_id": 410,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 16,
+    "pincode": "414001",
+    "city_id": 106,
+    "district_id": 401,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 17,
+    "pincode": "416115",
+    "city_id": 123,
+    "district_id": 416,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 18,
+    "pincode": "431401",
+    "city_id": 139,
+    "district_id": 425,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 19,
+    "pincode": "410206",
+    "city_id": 165,
+    "district_id": 427,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 20,
+    "pincode": "445001",
+    "city_id": 279,
+    "district_id": 436,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 21,
+    "pincode": "413501",
+    "city_id": 294,
+    "district_id": 401,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 22,
+    "pincode": "425412",
+    "city_id": 296,
+    "district_id": 422,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 23,
+    "pincode": "415001",
+    "city_id": 307,
+    "district_id": 430,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 24,
+    "pincode": "442001",
+    "city_id": 311,
+    "district_id": 434,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 25,
+    "pincode": "431001",
+    "city_id": 321,
+    "district_id": 401,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 26,
+    "pincode": "444505",
+    "city_id": 410,
+    "district_id": 435,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 27,
+    "pincode": "415612",
+    "city_id": 451,
+    "district_id": 428,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 28,
+    "pincode": "401404",
+    "city_id": 590,
+    "district_id": 424,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 29,
+    "pincode": "431122",
+    "city_id": 1455,
+    "district_id": 404,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 30,
+    "pincode": "441904",
+    "city_id": 1456,
+    "district_id": 405,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 31,
+    "pincode": "443001",
+    "city_id": 1457,
+    "district_id": 406,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 32,
+    "pincode": "442401",
+    "city_id": 1458,
+    "district_id": 407,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 33,
+    "pincode": "442605",
+    "city_id": 1461,
+    "district_id": 411,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 34,
+    "pincode": "441601",
+    "city_id": 1462,
+    "district_id": 412,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 35,
+    "pincode": "431513",
+    "city_id": 1463,
+    "district_id": 413,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 36,
+    "pincode": "425001",
+    "city_id": 1464,
+    "district_id": 414,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 37,
+    "pincode": "431203",
+    "city_id": 1465,
+    "district_id": 415,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 38,
+    "pincode": "416001",
+    "city_id": 1466,
+    "district_id": 416,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 39,
+    "pincode": "400050",
+    "city_id": 1467,
+    "district_id": 419,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 40,
+    "pincode": "402301",
+    "city_id": 1469,
+    "district_id": 427,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 41,
+    "pincode": "416601",
+    "city_id": 1470,
+    "district_id": 431,
+    "state_id": 21,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 42,
+    "pincode": "744101",
+    "city_id": 334,
+    "district_id": 1,
+    "state_id": 1,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 43,
+    "pincode": "781001",
+    "city_id": 43,
+    "district_id": 59,
+    "state_id": 4,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 44,
+    "pincode": "800001",
+    "city_id": 14,
+    "district_id": 119,
+    "state_id": 5,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 45,
+    "pincode": "160017",
+    "city_id": 44,
+    "district_id": 132,
+    "state_id": 6,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 46,
+    "pincode": "492001",
+    "city_id": 36,
+    "district_id": 158,
+    "state_id": 7,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 47,
+    "pincode": "396210",
+    "city_id": 1325,
+    "district_id": 167,
+    "state_id": 8,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 48,
+    "pincode": "110001",
+    "city_id": 143,
+    "district_id": 172,
+    "state_id": 9,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 49,
+    "pincode": "403001",
+    "city_id": 336,
+    "district_id": 183,
+    "state_id": 10,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 50,
+    "pincode": "382010",
+    "city_id": 1212,
+    "district_id": 197,
+    "state_id": 11,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 51,
+    "pincode": "171001",
+    "city_id": 237,
+    "district_id": 250,
+    "state_id": 13,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 52,
+    "pincode": "190001",
+    "city_id": 32,
+    "district_id": 272,
+    "state_id": 14,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 53,
+    "pincode": "834001",
+    "city_id": 51,
+    "district_id": 293,
+    "state_id": 15,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 54,
+    "pincode": "560001",
+    "city_id": 3,
+    "district_id": 303,
+    "state_id": 16,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 55,
+    "pincode": "695001",
+    "city_id": 58,
+    "district_id": 340,
+    "state_id": 17,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 56,
+    "pincode": "462001",
+    "city_id": 17,
+    "district_id": 354,
+    "state_id": 20,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 57,
+    "pincode": "795001",
+    "city_id": 133,
+    "district_id": 440,
+    "state_id": 22,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 58,
+    "pincode": "793001",
+    "city_id": 132,
+    "district_id": 453,
+    "state_id": 23,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 59,
+    "pincode": "796001",
+    "city_id": 122,
+    "district_id": 465,
+    "state_id": 24,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 60,
+    "pincode": "797001",
+    "city_id": 339,
+    "district_id": 479,
+    "state_id": 25,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 61,
+    "pincode": "751001",
+    "city_id": 54,
+    "district_id": 511,
+    "state_id": 26,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 62,
+    "pincode": "605001",
+    "city_id": 1539,
+    "district_id": 524,
+    "state_id": 27,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 63,
+    "pincode": "302001",
+    "city_id": 9,
+    "district_id": 568,
+    "state_id": 29,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 64,
+    "pincode": "737101",
+    "city_id": 1567,
+    "district_id": 589,
+    "state_id": 30,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 65,
+    "pincode": "600001",
+    "city_id": 6,
+    "district_id": 597,
+    "state_id": 31,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 66,
+    "pincode": "500001",
+    "city_id": 5,
+    "district_id": 636,
+    "state_id": 32,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 67,
+    "pincode": "799001",
+    "city_id": 97,
+    "district_id": 666,
+    "state_id": 33,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 68,
+    "pincode": "226001",
+    "city_id": 11,
+    "district_id": 722,
+    "state_id": 34,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 69,
+    "pincode": "248001",
+    "city_id": 71,
+    "district_id": 753,
+    "state_id": 35,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "pincode_id": 70,
+    "pincode": "700001",
+    "city_id": 7,
+    "district_id": 773,
+    "state_id": 36,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  }
+]

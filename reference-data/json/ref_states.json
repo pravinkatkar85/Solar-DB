@@ -1,0 +1,362 @@
+[
+  {
+    "state_id": 1,
+    "country_id": 1,
+    "state_code": "AN",
+    "state_name": "Andaman and Nicobar Islands",
+    "tax_region_code": "35",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "state_id": 2,
+    "country_id": 1,
+    "state_code": "AP",
+    "state_name": "Andhra Pradesh",
+    "tax_region_code": "37",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "state_id": 3,
+    "country_id": 1,
+    "state_code": "AR",
+    "state_name": "Arunachal Pradesh",
+    "tax_region_code": "12",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "state_id": 4,
+    "country_id": 1,
+    "state_code": "AS",
+    "state_name": "Assam",
+    "tax_region_code": "18",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "state_id": 5,
+    "country_id": 1,
+    "state_code": "BR",
+    "state_name": "Bihar",
+    "tax_region_code": "10",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "state_id": 6,
+    "country_id": 1,
+    "state_code": "CH",
+    "state_name": "Chandigarh",
+    "tax_region_code": "04",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "state_id": 7,
+    "country_id": 1,
+    "state_code": "CG",
+    "state_name": "Chhattisgarh",
+    "tax_region_code": "22",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "state_id": 8,
+    "country_id": 1,
+    "state_code": "DH",
+    "state_name": "Dadra and Nagar Haveli and Daman and Diu",
+    "tax_region_code": "26",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "state_id": 9,
+    "country_id": 1,
+    "state_code": "DL",
+    "state_name": "Delhi",
+    "tax_region_code": "07",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "state_id": 10,
+    "country_id": 1,
+    "state_code": "GA",
+    "state_name": "Goa",
+    "tax_region_code": "30",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "state_id": 11,
+    "country_id": 1,
+    "state_code": "GJ",
+    "state_name": "Gujarat",
+    "tax_region_code": "24",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "state_id": 12,
+    "country_id": 1,
+    "state_code": "HR",
+    "state_name": "Haryana",
+    "tax_region_code": "06",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "state_id": 13,
+    "country_id": 1,
+    "state_code": "HP",
+    "state_name": "Himachal Pradesh",
+    "tax_region_code": "02",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "state_id": 14,
+    "country_id": 1,
+    "state_code": "JK",
+    "state_name": "Jammu and Kashmir",
+    "tax_region_code": "01",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "state_id": 15,
+    "country_id": 1,
+    "state_code": "JH",
+    "state_name": "Jharkhand",
+    "tax_region_code": "20",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "state_id": 16,
+    "country_id": 1,
+    "state_code": "KA",
+    "state_name": "Karnataka",
+    "tax_region_code": "29",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "state_id": 17,
+    "country_id": 1,
+    "state_code": "KL",
+    "state_name": "Kerala",
+    "tax_region_code": "32",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "state_id": 18,
+    "country_id": 1,
+    "state_code": "LA",
+    "state_name": "Ladakh",
+    "tax_region_code": "38",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "state_id": 19,
+    "country_id": 1,
+    "state_code": "LD",
+    "state_name": "Lakshadweep",
+    "tax_region_code": "31",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "state_id": 20,
+    "country_id": 1,
+    "state_code": "MP",
+    "state_name": "Madhya Pradesh",
+    "tax_region_code": "23",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "state_id": 21,
+    "country_id": 1,
+    "state_code": "MH",
+    "state_name": "Maharashtra",
+    "tax_region_code": "27",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "state_id": 22,
+    "country_id": 1,
+    "state_code": "MN",
+    "state_name": "Manipur",
+    "tax_region_code": "14",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "state_id": 23,
+    "country_id": 1,
+    "state_code": "ML",
+    "state_name": "Meghalaya",
+    "tax_region_code": "17",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "state_id": 24,
+    "country_id": 1,
+    "state_code": "MZ",
+    "state_name": "Mizoram",
+    "tax_region_code": "15",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "state_id": 25,
+    "country_id": 1,
+    "state_code": "NL",
+    "state_name": "Nagaland",
+    "tax_region_code": "13",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "state_id": 26,
+    "country_id": 1,
+    "state_code": "OD",
+    "state_name": "Odisha",
+    "tax_region_code": "21",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "state_id": 27,
+    "country_id": 1,
+    "state_code": "PY",
+    "state_name": "Puducherry",
+    "tax_region_code": "34",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "state_id": 28,
+    "country_id": 1,
+    "state_code": "PB",
+    "state_name": "Punjab",
+    "tax_region_code": "03",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "state_id": 29,
+    "country_id": 1,
+    "state_code": "RJ",
+    "state_name": "Rajasthan",
+    "tax_region_code": "08",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "state_id": 30,
+    "country_id": 1,
+    "state_code": "SK",
+    "state_name": "Sikkim",
+    "tax_region_code": "11",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "state_id": 31,
+    "country_id": 1,
+    "state_code": "TN",
+    "state_name": "Tamil Nadu",
+    "tax_region_code": "33",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "state_id": 32,
+    "country_id": 1,
+    "state_code": "TS",
+    "state_name": "Telangana",
+    "tax_region_code": "36",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "state_id": 33,
+    "country_id": 1,
+    "state_code": "TR",
+    "state_name": "Tripura",
+    "tax_region_code": "16",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "state_id": 34,
+    "country_id": 1,
+    "state_code": "UP",
+    "state_name": "Uttar Pradesh",
+    "tax_region_code": "09",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "state_id": 35,
+    "country_id": 1,
+    "state_code": "UK",
+    "state_name": "Uttarakhand",
+    "tax_region_code": "05",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "state_id": 36,
+    "country_id": 1,
+    "state_code": "WB",
+    "state_name": "West Bengal",
+    "tax_region_code": "19",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  }
+]

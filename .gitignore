@@ -1,0 +1,22 @@
+# Environment and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+
+# Runtime/editor artifacts
+node_modules/
+.dart_tool/
+build/
+coverage/
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+

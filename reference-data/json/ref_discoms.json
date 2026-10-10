@@ -1,0 +1,762 @@
+[
+  {
+    "discom_id": 1,
+    "state_id": 1,
+    "district_id": null,
+    "discom_code": "ED_AN",
+    "discom_name": "Electricity Department, Andaman and Nicobar Islands",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 2,
+    "state_id": 2,
+    "district_id": null,
+    "discom_code": "APEPDCL",
+    "discom_name": "Andhra Pradesh Eastern Power Distribution Company Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 3,
+    "state_id": 2,
+    "district_id": null,
+    "discom_code": "APSPDCL",
+    "discom_name": "Andhra Pradesh Southern Power Distribution Company Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 4,
+    "state_id": 2,
+    "district_id": null,
+    "discom_code": "APCPDCL",
+    "discom_name": "Andhra Pradesh Central Power Distribution Corporation Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 5,
+    "state_id": 3,
+    "district_id": null,
+    "discom_code": "DoP_AR",
+    "discom_name": "Department of Power, Arunachal Pradesh",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 6,
+    "state_id": 4,
+    "district_id": null,
+    "discom_code": "APDCL",
+    "discom_name": "Assam Power Distribution Company Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 7,
+    "state_id": 5,
+    "district_id": null,
+    "discom_code": "NBPDCL",
+    "discom_name": "North Bihar Power Distribution Company Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 8,
+    "state_id": 5,
+    "district_id": null,
+    "discom_code": "SBPDCL",
+    "discom_name": "South Bihar Power Distribution Company Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 9,
+    "state_id": 6,
+    "district_id": null,
+    "discom_code": "CED",
+    "discom_name": "Chandigarh Electricity Department / CPDL",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 10,
+    "state_id": 7,
+    "district_id": null,
+    "discom_code": "CSPDCL",
+    "discom_name": "Chhattisgarh State Power Distribution Company Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 11,
+    "state_id": 8,
+    "district_id": null,
+    "discom_code": "DNHDDPDCL",
+    "discom_name": "DNH and DD Power Distribution Corporation Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 12,
+    "state_id": 9,
+    "district_id": null,
+    "discom_code": "BRPL",
+    "discom_name": "BSES Rajdhani Power Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 13,
+    "state_id": 9,
+    "district_id": null,
+    "discom_code": "BYPL",
+    "discom_name": "BSES Yamuna Power Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 14,
+    "state_id": 9,
+    "district_id": null,
+    "discom_code": "TPDDL",
+    "discom_name": "Tata Power Delhi Distribution Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 15,
+    "state_id": 9,
+    "district_id": null,
+    "discom_code": "NDMC",
+    "discom_name": "New Delhi Municipal Council Electricity Wing",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 16,
+    "state_id": 10,
+    "district_id": null,
+    "discom_code": "GED",
+    "discom_name": "Goa Electricity Department",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 17,
+    "state_id": 11,
+    "district_id": null,
+    "discom_code": "DGVCL",
+    "discom_name": "Dakshin Gujarat Vij Company Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 18,
+    "state_id": 11,
+    "district_id": null,
+    "discom_code": "MGVCL",
+    "discom_name": "Madhya Gujarat Vij Company Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 19,
+    "state_id": 11,
+    "district_id": null,
+    "discom_code": "PGVCL",
+    "discom_name": "Paschim Gujarat Vij Company Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 20,
+    "state_id": 11,
+    "district_id": null,
+    "discom_code": "UGVCL",
+    "discom_name": "Uttar Gujarat Vij Company Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 21,
+    "state_id": 11,
+    "district_id": 185,
+    "discom_code": "TPL_AMD",
+    "discom_name": "Torrent Power Limited - Ahmedabad",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 22,
+    "state_id": 11,
+    "district_id": 213,
+    "discom_code": "TPL_SUR",
+    "discom_name": "Torrent Power Limited - Surat",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 23,
+    "state_id": 12,
+    "district_id": null,
+    "discom_code": "UHBVNL",
+    "discom_name": "Uttar Haryana Bijli Vitran Nigam Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 24,
+    "state_id": 12,
+    "district_id": null,
+    "discom_code": "DHBVNL",
+    "discom_name": "Dakshin Haryana Bijli Vitran Nigam Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 25,
+    "state_id": 13,
+    "district_id": null,
+    "discom_code": "HPSEBL",
+    "discom_name": "Himachal Pradesh State Electricity Board Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 26,
+    "state_id": 14,
+    "district_id": null,
+    "discom_code": "JPDCL",
+    "discom_name": "Jammu Power Distribution Corporation Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 27,
+    "state_id": 14,
+    "district_id": null,
+    "discom_code": "KPDCL",
+    "discom_name": "Kashmir Power Distribution Corporation Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 28,
+    "state_id": 15,
+    "district_id": null,
+    "discom_code": "JBVNL",
+    "discom_name": "Jharkhand Bijli Vitran Nigam Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 29,
+    "state_id": 15,
+    "district_id": 279,
+    "discom_code": "TPADL",
+    "discom_name": "Tata Power Ajmer / Jamshedpur distribution (JUSCO/TPADL)",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 30,
+    "state_id": 16,
+    "district_id": null,
+    "discom_code": "BESCOM",
+    "discom_name": "Bangalore Electricity Supply Company Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 31,
+    "state_id": 16,
+    "district_id": null,
+    "discom_code": "CHESCOM",
+    "discom_name": "Chamundeshwari Electricity Supply Corporation Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 32,
+    "state_id": 16,
+    "district_id": null,
+    "discom_code": "GESCOM",
+    "discom_name": "Gulbarga Electricity Supply Company Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 33,
+    "state_id": 16,
+    "district_id": null,
+    "discom_code": "HESCOM",
+    "discom_name": "Hubli Electricity Supply Company Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 34,
+    "state_id": 16,
+    "district_id": null,
+    "discom_code": "MESCOM",
+    "discom_name": "Mangalore Electricity Supply Company Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 35,
+    "state_id": 17,
+    "district_id": null,
+    "discom_code": "KSEBL",
+    "discom_name": "Kerala State Electricity Board Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 36,
+    "state_id": 17,
+    "district_id": 341,
+    "discom_code": "TCED",
+    "discom_name": "Thrissur Corporation Electricity Department",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 37,
+    "state_id": 18,
+    "district_id": null,
+    "discom_code": "LPD_LA",
+    "discom_name": "Ladakh Power Development Department",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 38,
+    "state_id": 19,
+    "district_id": null,
+    "discom_code": "LED_LD",
+    "discom_name": "Lakshadweep Electricity Department",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 39,
+    "state_id": 20,
+    "district_id": null,
+    "discom_code": "MPMKVVCL",
+    "discom_name": "MP Madhya Kshetra Vidyut Vitaran Company Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 40,
+    "state_id": 20,
+    "district_id": null,
+    "discom_code": "MPPOKVVCL",
+    "discom_name": "MP Poorv Kshetra Vidyut Vitaran Company Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 41,
+    "state_id": 20,
+    "district_id": null,
+    "discom_code": "MPPAKVVCL",
+    "discom_name": "MP Paschim Kshetra Vidyut Vitaran Company Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 42,
+    "state_id": 21,
+    "district_id": null,
+    "discom_code": "MSEDCL",
+    "discom_name": "Maharashtra State Electricity Distribution Company Limited (Mahavitaran)",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 43,
+    "state_id": 21,
+    "district_id": 418,
+    "discom_code": "BEST",
+    "discom_name": "Brihanmumbai Electric Supply and Transport Undertaking",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 44,
+    "state_id": 21,
+    "district_id": 419,
+    "discom_code": "AEML",
+    "discom_name": "Adani Electricity Mumbai Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 45,
+    "state_id": 21,
+    "district_id": 418,
+    "discom_code": "TPML",
+    "discom_name": "Tata Power Mumbai Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 46,
+    "state_id": 21,
+    "district_id": 419,
+    "discom_code": "TPML_SUB",
+    "discom_name": "Tata Power Mumbai Limited (Suburban licensed area)",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 47,
+    "state_id": 21,
+    "district_id": 433,
+    "discom_code": "TPL_BHIWANDI",
+    "discom_name": "Torrent Power Limited - Bhiwandi (MSEDCL franchisee)",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 48,
+    "state_id": 22,
+    "district_id": null,
+    "discom_code": "MSPDCL",
+    "discom_name": "Manipur State Power Distribution Company Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 49,
+    "state_id": 23,
+    "district_id": null,
+    "discom_code": "MePDCL",
+    "discom_name": "Meghalaya Power Distribution Corporation Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 50,
+    "state_id": 24,
+    "district_id": null,
+    "discom_code": "PED_MZ",
+    "discom_name": "Power and Electricity Department, Mizoram",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 51,
+    "state_id": 25,
+    "district_id": null,
+    "discom_code": "DoP_NL",
+    "discom_name": "Department of Power, Nagaland",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 52,
+    "state_id": 26,
+    "district_id": null,
+    "discom_code": "TPCODL",
+    "discom_name": "TP Central Odisha Distribution Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 53,
+    "state_id": 26,
+    "district_id": null,
+    "discom_code": "TPNODL",
+    "discom_name": "TP Northern Odisha Distribution Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 54,
+    "state_id": 26,
+    "district_id": null,
+    "discom_code": "TPSODL",
+    "discom_name": "TP Southern Odisha Distribution Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 55,
+    "state_id": 26,
+    "district_id": null,
+    "discom_code": "TPWODL",
+    "discom_name": "TP Western Odisha Distribution Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 56,
+    "state_id": 27,
+    "district_id": null,
+    "discom_code": "PED_PY",
+    "discom_name": "Electricity Department, Puducherry",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 57,
+    "state_id": 28,
+    "district_id": null,
+    "discom_code": "PSPCL",
+    "discom_name": "Punjab State Power Corporation Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 58,
+    "state_id": 29,
+    "district_id": null,
+    "discom_code": "AVVNL",
+    "discom_name": "Ajmer Vidyut Vitran Nigam Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 59,
+    "state_id": 29,
+    "district_id": null,
+    "discom_code": "JDVVNL",
+    "discom_name": "Jodhpur Vidyut Vitran Nigam Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 60,
+    "state_id": 29,
+    "district_id": null,
+    "discom_code": "JVVNL",
+    "discom_name": "Jaipur Vidyut Vitran Nigam Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 61,
+    "state_id": 30,
+    "district_id": null,
+    "discom_code": "SPD_SK",
+    "discom_name": "Sikkim Power Department",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 62,
+    "state_id": 31,
+    "district_id": null,
+    "discom_code": "TNPDCL",
+    "discom_name": "Tamil Nadu Power Distribution Corporation Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 63,
+    "state_id": 32,
+    "district_id": null,
+    "discom_code": "TGNPDCL",
+    "discom_name": "Telangana Northern Power Distribution Company Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 64,
+    "state_id": 32,
+    "district_id": null,
+    "discom_code": "TGSPDCL",
+    "discom_name": "Telangana Southern Power Distribution Company Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 65,
+    "state_id": 33,
+    "district_id": null,
+    "discom_code": "TSECL",
+    "discom_name": "Tripura State Electricity Corporation Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 66,
+    "state_id": 34,
+    "district_id": null,
+    "discom_code": "DVVNL",
+    "discom_name": "Dakshinanchal Vidyut Vitran Nigam Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 67,
+    "state_id": 34,
+    "district_id": null,
+    "discom_code": "MVVNL",
+    "discom_name": "Madhyanchal Vidyut Vitran Nigam Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 68,
+    "state_id": 34,
+    "district_id": null,
+    "discom_code": "PVVNL",
+    "discom_name": "Paschimanchal Vidyut Vitran Nigam Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 69,
+    "state_id": 34,
+    "district_id": null,
+    "discom_code": "PuVVNL",
+    "discom_name": "Purvanchal Vidyut Vitran Nigam Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 70,
+    "state_id": 34,
+    "district_id": 716,
+    "discom_code": "KESCO",
+    "discom_name": "Kanpur Electricity Supply Company Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 71,
+    "state_id": 34,
+    "district_id": 702,
+    "discom_code": "NPCL",
+    "discom_name": "Noida Power Company Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 72,
+    "state_id": 34,
+    "district_id": 674,
+    "discom_code": "TPL_AGRA",
+    "discom_name": "Torrent Power Limited - Agra",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 73,
+    "state_id": 35,
+    "district_id": null,
+    "discom_code": "UPCL",
+    "discom_name": "Uttarakhand Power Corporation Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 74,
+    "state_id": 36,
+    "district_id": null,
+    "discom_code": "WBSEDCL",
+    "discom_name": "West Bengal State Electricity Distribution Company Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 75,
+    "state_id": 36,
+    "district_id": 773,
+    "discom_code": "CESC",
+    "discom_name": "CESC Limited (Kolkata)",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  },
+  {
+    "discom_id": 76,
+    "state_id": 36,
+    "district_id": null,
+    "discom_code": "IPCL",
+    "discom_name": "India Power Corporation Limited",
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  }
+]

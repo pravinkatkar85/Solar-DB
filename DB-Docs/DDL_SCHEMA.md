@@ -2788,6 +2788,8 @@ Modules 3–8 CREATE statements are in the SQL above (with table and column comm
 
 ## Planned functions (Modules 11–12)
 
+Application functions are added one at a time. The source file is `DB-Objects/SQLFunctions/solar_app.<function_name>.sql`, the contract is `DB-Docs/SQLFunctions/solar_app.<function_name>.md`, and `SQLScripts/02_functions.sql` loads the file. New tables stay in this review document and in `01_schema.sql`; their per-table SQL and column docs are regenerated into `DB-Objects/Tables/` and `DB-Docs/Tables/` after the schema is applied.
+
 | Function | Purpose |
 | --- | --- |
 | `fn_create_product_details` / `fn_update_product_details` | Admin catalogue |
@@ -2797,7 +2799,7 @@ Modules 3–8 CREATE statements are in the SQL above (with table and column comm
 | `fn_create_order_details` / `fn_update_order_details` | Order header + lines |
 | `fn_create_followup_details` / `fn_update_followup_details` | Follow-up tasks |
 | Existing `fn_update_*` on tickets, service requests, KYC, invoices | Admin queues (no extra tables) |
-| `fn_get_dropdown_data` | Includes ORDER/FOLLOWUP/USER_ACCOUNT/REGISTRATION_SOURCES |
+| `fn_get_dropdown_data` | Implemented. Source `DB-Objects/SQLFunctions/solar_app.fn_get_dropdown_data.sql`. Contract `DB-Docs/SQLFunctions/solar_app.fn_get_dropdown_data.md`. Serves the configured dropdowns, including order, follow-up, account, and registration-source lists |
 | `fn_create_user_details` (admin Path B) | User + customer + site + equipment + commissioned order |
 | `fn_create`/`fn_update` invoice & payment | Admin offline register; customer `fn_get` only |
 | `fn_create`/`fn_update` AMC, milestones, service_request | Admin service master per customer/product/install |

@@ -36,6 +36,8 @@ DB_SCHEMA = os.getenv("PGSCHEMA", "solar_app")
 OBJECTS_ROOT = PROJECT_ROOT / "DB-Objects"
 TABLE_SQL_DIR = OBJECTS_ROOT / "Tables"
 FUNCTION_SQL_DIR = OBJECTS_ROOT / "Functions"
+# Authored sources. This export must not write or delete DB-Objects/SQLFunctions
+# or DB-Docs/SQLFunctions.
 DOCS_ROOT = PROJECT_ROOT / "DB-Docs"
 TABLE_DOC_DIR = DOCS_ROOT / "Tables"
 FUNCTION_DOC_DIR = DOCS_ROOT / "Functions"

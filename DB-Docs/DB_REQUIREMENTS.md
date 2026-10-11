@@ -78,7 +78,9 @@ Function names MUST strictly follow action-based prefixes:
 
 ## 6. SQL Function Input/Output Contract
 
-All database functions created in `02_functions.sql` MUST adhere to this exact signature and output contract:
+All database functions loaded by `02_functions.sql` MUST adhere to this exact signature and output contract.
+
+Each application function is authored as its own file in `DB-Objects/SQLFunctions/solar_app.<function_name>.sql`. Its maintained contract is `DB-Docs/SQLFunctions/solar_app.<function_name>.md`. `02_functions.sql` only includes those files in dependency order. Generated snapshots under `DB-Objects/Functions/` and `DB-Docs/Functions/` are refreshed from the live database after installation and are not the source of truth.
 
 ```sql
 CREATE OR REPLACE FUNCTION fn_create_sample_entity(p_payload JSONB)

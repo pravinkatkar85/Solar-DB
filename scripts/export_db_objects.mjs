@@ -35,6 +35,9 @@ const FUNCTION_SQL_DIR = path.join(OBJECTS_ROOT, 'Functions');
 const DOCS_ROOT = path.join(DB_ROOT, 'DB-Docs');
 const TABLE_DOC_DIR = path.join(DOCS_ROOT, 'Tables');
 const FUNCTION_DOC_DIR = path.join(DOCS_ROOT, 'Functions');
+// Authored sources. This export must not write or delete these directories:
+//   DB-Objects/SQLFunctions
+//   DB-Docs/SQLFunctions
 const INDEX_DOC = path.join(DOCS_ROOT, 'DATABASE_OBJECTS_INDEX.md');
 
 function safeFilename(value) {

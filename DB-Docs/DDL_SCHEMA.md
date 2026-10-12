@@ -2800,6 +2800,8 @@ Application functions are added one at a time. The source file is `DB-Objects/SQ
 | `fn_create_followup_details` / `fn_update_followup_details` | Follow-up tasks |
 | Existing `fn_update_*` on tickets, service requests, KYC, invoices | Admin queues (no extra tables) |
 | `fn_get_dropdown_data` | Implemented. Source `DB-Objects/SQLFunctions/solar_app.fn_get_dropdown_data.sql`. Contract `DB-Docs/SQLFunctions/solar_app.fn_get_dropdown_data.md`. Serves the configured dropdowns, including order, follow-up, account, and registration-source lists |
+| `fn_create_pin_user` | Implemented. Creates one customer login and stores a bcrypt PIN hash. This is not the Path B `fn_create_user_details` wizard |
+| `fn_create_pin_session` | Implemented. Verifies a mobile number and PIN, then stores a hashed session token in `log_user_sessions` |
 | `fn_create_user_details` (admin Path B) | User + customer + site + equipment + commissioned order |
 | `fn_create`/`fn_update` invoice & payment | Admin offline register; customer `fn_get` only |
 | `fn_create`/`fn_update` AMC, milestones, service_request | Admin service master per customer/product/install |

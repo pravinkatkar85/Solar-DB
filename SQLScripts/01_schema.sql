@@ -14,6 +14,10 @@
 -- A role with sufficient database privileges must install it before table creation.
 CREATE EXTENSION IF NOT EXISTS btree_gist WITH SCHEMA public;
 
+-- pgcrypto hashes PIN values for fn_create_pin_user and fn_create_pin_session.
+-- It ships with PostgreSQL. A privileged role must install it before those functions run.
+CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
+
 SET search_path TO solar_app, public;
 
 -- =====================================================================

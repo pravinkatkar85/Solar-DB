@@ -9,3 +9,5 @@
 --   psql -U solar_app_user -d SolarDB -v ON_ERROR_STOP=1 -f SQLScripts/02_functions.sql
 
 \ir ../DB-Objects/SQLFunctions/solar_app.fn_get_dropdown_data.sql
+\ir ../DB-Objects/SQLFunctions/solar_app.fn_create_pin_user.sql
+\ir ../DB-Objects/SQLFunctions/solar_app.fn_create_pin_session.sql

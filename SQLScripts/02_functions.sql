@@ -11,3 +11,8 @@
 \ir ../DB-Objects/SQLFunctions/solar_app.fn_get_dropdown_data.sql
 \ir ../DB-Objects/SQLFunctions/solar_app.fn_create_pin_user.sql
 \ir ../DB-Objects/SQLFunctions/solar_app.fn_create_pin_session.sql
+\ir ../DB-Objects/SQLFunctions/solar_app.fn_update_user_pin.sql
+\ir ../DB-Objects/SQLFunctions/solar_app.fn_get_product_details.sql
+\ir ../DB-Objects/SQLFunctions/solar_app.fn_create_product_enquiry_details.sql
+\ir ../DB-Objects/SQLFunctions/solar_app.fn_get_product_enquiry_details.sql
+\ir ../DB-Objects/SQLFunctions/solar_app.fn_update_product_enquiry_details.sql

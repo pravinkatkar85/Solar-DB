@@ -2793,8 +2793,10 @@ Application functions are added one at a time. The source file is `DB-Objects/SQ
 | Function | Purpose |
 | --- | --- |
 | `fn_create_product_details` / `fn_update_product_details` | Admin catalogue |
-| `fn_get_product_details` | Published list vs admin drafts |
-| `fn_create_product_enquiry_details` / `fn_update_product_enquiry_details` | Enquiry + convert to lead |
+| `fn_get_product_details` | Implemented. Published active products, or one published product with active media. No session. Admin drafts are not returned |
+| `fn_create_product_enquiry_details` | Implemented. Open enquiry for the session user and a published product. Conversion is not included |
+| `fn_get_product_enquiry_details` | Implemented. Lists the session user's own active enquiries. A payload user id is not trusted |
+| `fn_update_product_enquiry_details` | Implemented for the enquiry owner: cancel an open enquiry, or request one follow-up from the assigned engineer. Lead conversion is not included |
 | `fn_update_user_details` | Admin role, suspend/activate (`account_status`) |
 | `fn_create_order_details` / `fn_update_order_details` | Order header + lines |
 | `fn_create_followup_details` / `fn_update_followup_details` | Follow-up tasks |
@@ -2802,6 +2804,7 @@ Application functions are added one at a time. The source file is `DB-Objects/SQ
 | `fn_get_dropdown_data` | Implemented. Source `DB-Objects/SQLFunctions/solar_app.fn_get_dropdown_data.sql`. Contract `DB-Docs/SQLFunctions/solar_app.fn_get_dropdown_data.md`. Serves the configured dropdowns, including order, follow-up, account, and registration-source lists |
 | `fn_create_pin_user` | Implemented. Creates one customer login and stores a bcrypt PIN hash. This is not the Path B `fn_create_user_details` wizard |
 | `fn_create_pin_session` | Implemented. Verifies a mobile number and PIN, then stores a hashed session token in `log_user_sessions` |
+| `fn_update_user_pin` | Implemented. Changes the signed-in user's PIN after the current bcrypt hash matches. Identity is the active session hash, not a payload user id. Administrator reset is not implemented |
 | `fn_create_user_details` (admin Path B) | User + customer + site + equipment + commissioned order |
 | `fn_create`/`fn_update` invoice & payment | Admin offline register; customer `fn_get` only |
 | `fn_create`/`fn_update` AMC, milestones, service_request | Admin service master per customer/product/install |

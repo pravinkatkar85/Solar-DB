@@ -1417,14 +1417,14 @@ CREATE TABLE solar_app.site_visit_details (
 );
 COMMENT ON TABLE solar_app.site_visit_details IS 'All field visits: enquiry/feasibility, installation, free or paid servicing, complaints. Charge vs free is decided in functions from AMC/subscription entitlement and distance slabs from the office. Assignee is any app user (technician, sales, or other authorised role). Money collected offline.';
 COMMENT ON COLUMN solar_app.site_visit_details.site_visit_id IS 'Surrogate primary key.';
-COMMENT ON COLUMN solar_app.site_visit_details.visit_no IS 'Public unique visit number generated in fn_create_site_visit_details.';
+COMMENT ON COLUMN solar_app.site_visit_details.visit_no IS 'Public unique visit number. fn_update_site_visit_details generates SV- plus the identity padded to 8 digits when it inserts the visit. fn_create_site_visit_details is not authored.';
 COMMENT ON COLUMN solar_app.site_visit_details.visit_purpose_ref_data_id IS 'FK to SITE_VISIT_PURPOSES (enquiry, installation, service, complaint, commissioning).';
 COMMENT ON COLUMN solar_app.site_visit_details.lead_id IS 'Optional lead for pre-customer feasibility/enquiry visits.';
 COMMENT ON COLUMN solar_app.site_visit_details.product_enquiry_id IS 'Optional catalogue enquiry this visit follows up. FK added after product_enquiry_details exists.';
 COMMENT ON COLUMN solar_app.site_visit_details.customer_id IS 'Optional customer. FK added after customer_details exists.';
 COMMENT ON COLUMN solar_app.site_visit_details.site_id IS 'Optional installed/planned site. FK added after site_details exists.';
 COMMENT ON COLUMN solar_app.site_visit_details.order_id IS 'Optional fulfilment order (installation visit). FK added after order_details exists.';
-COMMENT ON COLUMN solar_app.site_visit_details.service_request_id IS 'Optional preventive service booking. FK added after service_request_details exists.';
+COMMENT ON COLUMN solar_app.site_visit_details.service_request_id IS 'Optional preventive service booking. FK added after service_request_details exists. At most one visit row may reference a service request.';
 COMMENT ON COLUMN solar_app.site_visit_details.service_milestone_id IS 'Optional free-service milestone consumed by this visit.';
 COMMENT ON COLUMN solar_app.site_visit_details.complaint_ticket_id IS 'Optional complaint this visit is for. FK added after complaint_ticket_details exists.';
 COMMENT ON COLUMN solar_app.site_visit_details.amc_contract_id IS 'Optional AMC used to mark the visit free. FK added after amc_contract_details exists.';
@@ -1455,6 +1455,7 @@ COMMENT ON COLUMN solar_app.site_visit_details.created_on IS 'Row insert timesta
 COMMENT ON COLUMN solar_app.site_visit_details.updated_on IS 'Last update timestamp with time zone (UTC). Set only inside SQL functions (no triggers).';
 CREATE INDEX idx_sv_assignee_sched ON solar_app.site_visit_details (assigned_to_user_id, scheduled_on) WHERE active_ind = TRUE;
 CREATE INDEX idx_sv_status ON solar_app.site_visit_details (visit_status_ref_data_id, scheduled_on);
+CREATE UNIQUE INDEX uq_sv_one_service_request ON solar_app.site_visit_details (service_request_id) WHERE service_request_id IS NOT NULL;
 
 -- =====================================================================
 -- MODULE 11 — Product catalogue & enquiry (NEW)
@@ -1969,6 +1970,11 @@ CREATE TABLE solar_app.service_request_details (
     arrival_status            VARCHAR(30),
     completion_notes          VARCHAR(1000),
     report_url                VARCHAR(500),
+    quoted_charge_amount      NUMERIC(12,2),
+    quoted_currency_code      CHAR(3),
+    visit_charge_slab_id      BIGINT,
+    fee_quote_snapshot_json   JSONB        NOT NULL DEFAULT '{}'::jsonb,
+    quote_confirmed_on        TIMESTAMPTZ,
     active_ind                BOOLEAN      NOT NULL DEFAULT TRUE,
     created_by                VARCHAR(50)  NOT NULL DEFAULT 'SYSTEM',
     updated_by                VARCHAR(50)  NOT NULL DEFAULT 'SYSTEM',
@@ -1984,7 +1990,19 @@ CREATE TABLE solar_app.service_request_details (
     CONSTRAINT fk_sr_status FOREIGN KEY (status_ref_data_id) REFERENCES solar_app.ref_data (ref_data_id) ON DELETE RESTRICT,
     CONSTRAINT fk_sr_milestone FOREIGN KEY (milestone_id) REFERENCES solar_app.service_milestone_details (service_milestone_id) ON DELETE SET NULL,
     CONSTRAINT fk_sr_amc FOREIGN KEY (amc_contract_id) REFERENCES solar_app.amc_contract_details (amc_contract_id) ON DELETE SET NULL,
-    CONSTRAINT fk_sr_product FOREIGN KEY (product_id) REFERENCES solar_app.product_details (product_id) ON DELETE SET NULL
+    CONSTRAINT fk_sr_product FOREIGN KEY (product_id) REFERENCES solar_app.product_details (product_id) ON DELETE SET NULL,
+    CONSTRAINT fk_sr_quote_currency FOREIGN KEY (quoted_currency_code) REFERENCES solar_app.ref_currencies (currency_code) ON DELETE RESTRICT,
+    CONSTRAINT fk_sr_quote_slab FOREIGN KEY (visit_charge_slab_id) REFERENCES solar_app.ref_visit_charge_slabs (visit_charge_slab_id) ON DELETE RESTRICT,
+    CONSTRAINT chk_sr_quote_amount CHECK (quoted_charge_amount IS NULL OR quoted_charge_amount >= 0),
+    CONSTRAINT chk_sr_quote_pair CHECK ((quoted_charge_amount IS NULL) = (quoted_currency_code IS NULL)),
+    CONSTRAINT chk_sr_quote_confirmed CHECK (
+        quote_confirmed_on IS NULL
+        OR (
+            quoted_charge_amount IS NOT NULL
+            AND quoted_currency_code IS NOT NULL
+            AND visit_charge_slab_id IS NOT NULL
+        )
+    )
 );
 COMMENT ON TABLE solar_app.service_request_details IS 'Preventive service booking or admin-entered historical visit (Path B), linked to site/product/order when known.';
 COMMENT ON COLUMN solar_app.service_request_details.service_request_id IS 'Surrogate primary key.';
@@ -2003,6 +2021,11 @@ COMMENT ON COLUMN solar_app.service_request_details.product_id IS 'Optional cata
 COMMENT ON COLUMN solar_app.service_request_details.arrival_status IS 'Technician arrival state for the customer tracker.';
 COMMENT ON COLUMN solar_app.service_request_details.completion_notes IS 'Work done / historical Path B notes.';
 COMMENT ON COLUMN solar_app.service_request_details.report_url IS 'Downloadable service report URL.';
+COMMENT ON COLUMN solar_app.service_request_details.quoted_charge_amount IS 'Confirmed offline visit fee. NULL until the booking quote is confirmed.';
+COMMENT ON COLUMN solar_app.service_request_details.quoted_currency_code IS 'Currency of quoted_charge_amount. NULL until the booking quote is confirmed.';
+COMMENT ON COLUMN solar_app.service_request_details.visit_charge_slab_id IS 'Charge slab selected for the confirmed quote.';
+COMMENT ON COLUMN solar_app.service_request_details.fee_quote_snapshot_json IS 'Immutable snapshot of the confirmed quote. Empty until a quote is confirmed.';
+COMMENT ON COLUMN solar_app.service_request_details.quote_confirmed_on IS 'Timestamp when the confirmed quote was stored. NULL means the quote is not confirmed.';
 COMMENT ON COLUMN solar_app.service_request_details.active_ind IS 'Soft-delete flag. FALSE hides the row from default queries; set only inside SQL functions (no triggers).';
 COMMENT ON COLUMN solar_app.service_request_details.created_by IS 'Actor who created the row. Taken from payload logged_in_user_id; default SYSTEM.';
 COMMENT ON COLUMN solar_app.service_request_details.updated_by IS 'Actor who last updated the row. Set only inside SQL functions (no triggers).';
@@ -2010,6 +2033,39 @@ COMMENT ON COLUMN solar_app.service_request_details.created_on IS 'Row insert ti
 COMMENT ON COLUMN solar_app.service_request_details.updated_on IS 'Last update timestamp with time zone (UTC). Set only inside SQL functions (no triggers).';
 CREATE INDEX idx_sr_tech_status_date ON solar_app.service_request_details (technician_id, status_ref_data_id, preferred_on) WHERE active_ind = TRUE;
 CREATE INDEX idx_sr_customer_site ON solar_app.service_request_details (customer_id, site_id) WHERE active_ind = TRUE;
+
+CREATE TABLE solar_app.amc_credit_reservation_details (
+    amc_credit_reservation_id BIGINT GENERATED ALWAYS AS IDENTITY,
+    service_request_id        BIGINT      NOT NULL,
+    amc_contract_id           BIGINT      NOT NULL,
+    credit_seq                INTEGER     NOT NULL,
+    reservation_status        VARCHAR(20) NOT NULL,
+    active_ind                BOOLEAN     NOT NULL DEFAULT TRUE,
+    created_by                VARCHAR(50) NOT NULL DEFAULT 'SYSTEM',
+    updated_by                VARCHAR(50) NOT NULL DEFAULT 'SYSTEM',
+    created_on                TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_on                TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT pk_amc_credit_reservation PRIMARY KEY (amc_credit_reservation_id),
+    CONSTRAINT fk_acr_request FOREIGN KEY (service_request_id) REFERENCES solar_app.service_request_details (service_request_id) ON DELETE RESTRICT,
+    CONSTRAINT fk_acr_contract FOREIGN KEY (amc_contract_id) REFERENCES solar_app.amc_contract_details (amc_contract_id) ON DELETE RESTRICT,
+    CONSTRAINT chk_acr_seq CHECK (credit_seq >= 1),
+    CONSTRAINT chk_acr_status CHECK (reservation_status IN ('RESERVED', 'CONSUMED', 'RELEASED')),
+    CONSTRAINT chk_acr_hide CHECK (active_ind IS TRUE OR reservation_status = 'RELEASED')
+);
+COMMENT ON TABLE solar_app.amc_credit_reservation_details IS 'One held or consumed free-visit credit for a service request. A released row keeps history and frees that credit sequence for reuse.';
+COMMENT ON COLUMN solar_app.amc_credit_reservation_details.amc_credit_reservation_id IS 'Surrogate primary key.';
+COMMENT ON COLUMN solar_app.amc_credit_reservation_details.service_request_id IS 'Booking that holds this credit. At most one RESERVED or CONSUMED row is allowed per request.';
+COMMENT ON COLUMN solar_app.amc_credit_reservation_details.amc_contract_id IS 'Sold AMC contract whose allowance supplies this credit.';
+COMMENT ON COLUMN solar_app.amc_credit_reservation_details.credit_seq IS 'Credit number within the contract. The same number may be used again only after the earlier row is RELEASED.';
+COMMENT ON COLUMN solar_app.amc_credit_reservation_details.reservation_status IS 'RESERVED, CONSUMED, or RELEASED. Stored as a check constraint so the hold does not depend on reference-data load order.';
+COMMENT ON COLUMN solar_app.amc_credit_reservation_details.active_ind IS 'Soft-delete flag. A RESERVED or CONSUMED row cannot be hidden; release it first.';
+COMMENT ON COLUMN solar_app.amc_credit_reservation_details.created_by IS 'Actor who created the row. Taken from payload logged_in_user_id; default SYSTEM.';
+COMMENT ON COLUMN solar_app.amc_credit_reservation_details.updated_by IS 'Actor who last updated the row. Set only inside SQL functions (no triggers).';
+COMMENT ON COLUMN solar_app.amc_credit_reservation_details.created_on IS 'Row insert timestamp with time zone (UTC).';
+COMMENT ON COLUMN solar_app.amc_credit_reservation_details.updated_on IS 'Last update timestamp with time zone (UTC). Set only inside SQL functions (no triggers).';
+CREATE UNIQUE INDEX uq_acr_contract_credit ON solar_app.amc_credit_reservation_details (amc_contract_id, credit_seq) WHERE reservation_status IN ('RESERVED', 'CONSUMED') AND active_ind IS TRUE;
+CREATE UNIQUE INDEX uq_acr_request_open ON solar_app.amc_credit_reservation_details (service_request_id) WHERE reservation_status IN ('RESERVED', 'CONSUMED') AND active_ind IS TRUE;
+CREATE INDEX idx_acr_contract_status ON solar_app.amc_credit_reservation_details (amc_contract_id, reservation_status) WHERE active_ind IS TRUE;
 
 -- =====================================================================
 -- MODULE 6 — Complaints
@@ -2798,6 +2854,8 @@ Application functions are added one at a time. The source file is `DB-Objects/SQ
 | `fn_get_product_enquiry_details` | Implemented. Lists the session user's own active enquiries. A payload user id is not trusted |
 | `fn_update_product_enquiry_details` | Implemented for the enquiry owner: cancel an open enquiry, or request one follow-up from the assigned engineer. Lead conversion is not included |
 | `fn_update_user_details` | Admin role, suspend/activate (`account_status`) |
+| `fn_get_user_profile` | Implemented. Returns the signed-in user's own profile and customer code. A payload user id is not trusted |
+| `fn_update_user_profile` | Implemented. Updates the signed-in user's optional email and optional secondary mobile |
 | `fn_create_order_details` / `fn_update_order_details` | Order header + lines |
 | `fn_create_followup_details` / `fn_update_followup_details` | Follow-up tasks |
 | Existing `fn_update_*` on tickets, service requests, KYC, invoices | Admin queues (no extra tables) |
@@ -2812,8 +2870,13 @@ Application functions are added one at a time. The source file is `DB-Objects/SQ
 | `fn_get_notification_details` / `fn_update_notification_details` | Inbox list, unread count, mark read |
 | `fn_create_service_reminder_notifications` | Batch: milestone due, AMC expiry |
 | `fn_create_followup_due_notifications` | Batch: assigned follow-ups due/overdue |
-| `fn_create_site_visit_details` / `fn_update_site_visit_details` | Schedule, assign (any user), complete, mark charges received |
-| `fn_get_site_visit_charge` | Distance from office + slab + AMC/free-milestone entitlement |
+| `fn_update_site_visit_details` | Authored, not installed. Inserts at most one visit for a confirmed booking, generates `visit_no` as `SV-` plus the identity padded to 8 digits, and completes it. `fn_create_site_visit_details` is not authored. Assignment and offline charge receipt are not implemented |
+| `fn_get_site_visit_charge` | Authored, not installed. Read-only fee quote from site GPS, one non-development default office, and a non-development slab. Snapshot `free_visit_count` and `free_visit_radius_km` only. Does not reserve a credit |
+| `fn_get_amc_contract_details` | Implemented in source. Lists the session customer's AMC contracts and free-service milestones in expiry order for the Phase 1 screen. `free_visit_count` and `free_visit_radius_km` come from `plan_snapshot_json` only. A visit fee is not calculated |
+| `fn_get_site_details` | Implemented. Lists the session customer's own active sites, status, commissioning date, and equipment. A payload user id is not trusted |
+| `fn_get_service_request_details` | Implemented. Lists the session customer's own preventive service requests. Complaint tickets are not included |
+| `fn_create_service_request_details` | Authored, not installed. Books an Open request. Stores the server fee quote and reserves one AMC credit when approved pricing exists and a paid visit qualifies. When that approved office or slab configuration is absent, books the request with no quote and no reservation. Requires migration 08 before installation |
+| `fn_update_service_request_details` | Authored, not installed. Cancels or lapses an uncompleted booking, releases only a RESERVED credit, and reschedules only after the customer confirms the recalculated amount, currency, and slab id |
 
 ---
 

@@ -805,7 +805,7 @@ These rules are **not** triggers. They will live in `02_functions.sql`:
 | Ticket number `TKT-YYYY-nnnn` | `fn_create_complaint_ticket_details` |
 | Catalogue list only if `admin_registered` and `is_published` | `fn_get_product_details` |
 | Create technician (admin) | `fn_create_user_details` + `fn_create_technician_details` in one call (same `user_id`) |
-| Site visit schedule/assign/complete | `fn_create_site_visit_details` / `fn_update_site_visit_details` |
+| Site visit complete for a confirmed booking | `fn_update_site_visit_details` generates `visit_no` and completes the one visit. `fn_create_site_visit_details` is not authored |
 | Visit fee from office km + AMC/free credits | `fn_get_site_visit_charge` |
 | Path B admin register after install | `fn_create_user_details` + customer/site/equipment/order |
 | Offline bill/payment (admin write) | `fn_create`/`fn_update` invoice & payment; customer `fn_get` only |

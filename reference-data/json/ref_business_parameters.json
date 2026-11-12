@@ -1,1 +1,19 @@
-[]
+[
+  {
+    "parameter_code": "COMPLAINT_MEDIA_MAX_COUNT",
+    "parameter_name": "Complaint media attachment maximum",
+    "value_type": "NUMERIC",
+    "numeric_value": 4,
+    "text_value": null,
+    "boolean_value": null,
+    "json_value": null,
+    "parameter_unit": "COUNT",
+    "parameter_desc": "Maximum photos/videos per complaint ticket (M6.2 OPEN-T3).",
+    "admin_manageable_ind": true,
+    "effective_from": "2026-01-01",
+    "effective_to": null,
+    "active_ind": true,
+    "created_by": "SYSTEM",
+    "updated_by": "SYSTEM"
+  }
+]

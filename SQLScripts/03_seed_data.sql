@@ -19,11 +19,32 @@ ON CONFLICT (currency_id) DO UPDATE SET
   updated_by = EXCLUDED.updated_by,
   updated_on = CURRENT_TIMESTAMP;
 
-SELECT setval(
-  pg_get_serial_sequence('solar_app.ref_currencies', 'currency_id'),
-  COALESCE((SELECT MAX(currency_id) FROM solar_app.ref_currencies), 1),
-  EXISTS (SELECT 1 FROM solar_app.ref_currencies)
-);
+-- Forward-only identity sync: advance only when sequence is behind MAX(id).
+-- Leave sequence unchanged when already ahead (gaps from CACHE/concurrency are OK).
+SELECT CASE
+  WHEN seq_meta.next_expected > seq_meta.max_id THEN seq_meta.next_expected
+  ELSE setval(seq_meta.seq_reg, seq_meta.max_id, TRUE)
+END
+FROM (
+  SELECT
+    pg_get_serial_sequence('solar_app.ref_currencies', 'currency_id')::regclass AS seq_reg,
+    (SELECT MAX(currency_id) FROM solar_app.ref_currencies) AS max_id,
+    CASE
+      WHEN s.is_called THEN s.last_value + 1
+      ELSE s.last_value
+    END AS next_expected
+  FROM pg_sequences AS s
+  WHERE pg_get_serial_sequence('solar_app.ref_currencies', 'currency_id') IS NOT NULL
+    AND (
+      (s.schemaname || '.' || s.sequencename) = pg_get_serial_sequence('solar_app.ref_currencies', 'currency_id')
+      OR s.sequencename = split_part(
+           pg_get_serial_sequence('solar_app.ref_currencies', 'currency_id'),
+           '.',
+           2
+         )
+    )
+) AS seq_meta
+WHERE seq_meta.max_id IS NOT NULL;
 -- =============================================================================
 -- Source: reference-data/sql/02_ref_countries.sql
 -- =============================================================================
@@ -45,11 +66,32 @@ ON CONFLICT (country_id) DO UPDATE SET
   updated_by = EXCLUDED.updated_by,
   updated_on = CURRENT_TIMESTAMP;
 
-SELECT setval(
-  pg_get_serial_sequence('solar_app.ref_countries', 'country_id'),
-  COALESCE((SELECT MAX(country_id) FROM solar_app.ref_countries), 1),
-  EXISTS (SELECT 1 FROM solar_app.ref_countries)
-);
+-- Forward-only identity sync: advance only when sequence is behind MAX(id).
+-- Leave sequence unchanged when already ahead (gaps from CACHE/concurrency are OK).
+SELECT CASE
+  WHEN seq_meta.next_expected > seq_meta.max_id THEN seq_meta.next_expected
+  ELSE setval(seq_meta.seq_reg, seq_meta.max_id, TRUE)
+END
+FROM (
+  SELECT
+    pg_get_serial_sequence('solar_app.ref_countries', 'country_id')::regclass AS seq_reg,
+    (SELECT MAX(country_id) FROM solar_app.ref_countries) AS max_id,
+    CASE
+      WHEN s.is_called THEN s.last_value + 1
+      ELSE s.last_value
+    END AS next_expected
+  FROM pg_sequences AS s
+  WHERE pg_get_serial_sequence('solar_app.ref_countries', 'country_id') IS NOT NULL
+    AND (
+      (s.schemaname || '.' || s.sequencename) = pg_get_serial_sequence('solar_app.ref_countries', 'country_id')
+      OR s.sequencename = split_part(
+           pg_get_serial_sequence('solar_app.ref_countries', 'country_id'),
+           '.',
+           2
+         )
+    )
+) AS seq_meta
+WHERE seq_meta.max_id IS NOT NULL;
 -- =============================================================================
 -- Source: reference-data/sql/03_ref_states.sql
 -- =============================================================================
@@ -101,11 +143,32 @@ ON CONFLICT (state_id) DO UPDATE SET
   updated_by = EXCLUDED.updated_by,
   updated_on = CURRENT_TIMESTAMP;
 
-SELECT setval(
-  pg_get_serial_sequence('solar_app.ref_states', 'state_id'),
-  COALESCE((SELECT MAX(state_id) FROM solar_app.ref_states), 1),
-  EXISTS (SELECT 1 FROM solar_app.ref_states)
-);
+-- Forward-only identity sync: advance only when sequence is behind MAX(id).
+-- Leave sequence unchanged when already ahead (gaps from CACHE/concurrency are OK).
+SELECT CASE
+  WHEN seq_meta.next_expected > seq_meta.max_id THEN seq_meta.next_expected
+  ELSE setval(seq_meta.seq_reg, seq_meta.max_id, TRUE)
+END
+FROM (
+  SELECT
+    pg_get_serial_sequence('solar_app.ref_states', 'state_id')::regclass AS seq_reg,
+    (SELECT MAX(state_id) FROM solar_app.ref_states) AS max_id,
+    CASE
+      WHEN s.is_called THEN s.last_value + 1
+      ELSE s.last_value
+    END AS next_expected
+  FROM pg_sequences AS s
+  WHERE pg_get_serial_sequence('solar_app.ref_states', 'state_id') IS NOT NULL
+    AND (
+      (s.schemaname || '.' || s.sequencename) = pg_get_serial_sequence('solar_app.ref_states', 'state_id')
+      OR s.sequencename = split_part(
+           pg_get_serial_sequence('solar_app.ref_states', 'state_id'),
+           '.',
+           2
+         )
+    )
+) AS seq_meta
+WHERE seq_meta.max_id IS NOT NULL;
 -- =============================================================================
 -- Source: reference-data/sql/04_ref_districts.sql
 -- =============================================================================
@@ -993,11 +1056,32 @@ ON CONFLICT (district_id) DO UPDATE SET
   updated_by = EXCLUDED.updated_by,
   updated_on = CURRENT_TIMESTAMP;
 
-SELECT setval(
-  pg_get_serial_sequence('solar_app.ref_districts', 'district_id'),
-  COALESCE((SELECT MAX(district_id) FROM solar_app.ref_districts), 1),
-  EXISTS (SELECT 1 FROM solar_app.ref_districts)
-);
+-- Forward-only identity sync: advance only when sequence is behind MAX(id).
+-- Leave sequence unchanged when already ahead (gaps from CACHE/concurrency are OK).
+SELECT CASE
+  WHEN seq_meta.next_expected > seq_meta.max_id THEN seq_meta.next_expected
+  ELSE setval(seq_meta.seq_reg, seq_meta.max_id, TRUE)
+END
+FROM (
+  SELECT
+    pg_get_serial_sequence('solar_app.ref_districts', 'district_id')::regclass AS seq_reg,
+    (SELECT MAX(district_id) FROM solar_app.ref_districts) AS max_id,
+    CASE
+      WHEN s.is_called THEN s.last_value + 1
+      ELSE s.last_value
+    END AS next_expected
+  FROM pg_sequences AS s
+  WHERE pg_get_serial_sequence('solar_app.ref_districts', 'district_id') IS NOT NULL
+    AND (
+      (s.schemaname || '.' || s.sequencename) = pg_get_serial_sequence('solar_app.ref_districts', 'district_id')
+      OR s.sequencename = split_part(
+           pg_get_serial_sequence('solar_app.ref_districts', 'district_id'),
+           '.',
+           2
+         )
+    )
+) AS seq_meta
+WHERE seq_meta.max_id IS NOT NULL;
 -- =============================================================================
 -- Source: reference-data/sql/05_ref_cities.sql
 -- =============================================================================
@@ -2911,11 +2995,32 @@ ON CONFLICT (city_id) DO UPDATE SET
   updated_by = EXCLUDED.updated_by,
   updated_on = CURRENT_TIMESTAMP;
 
-SELECT setval(
-  pg_get_serial_sequence('solar_app.ref_cities', 'city_id'),
-  COALESCE((SELECT MAX(city_id) FROM solar_app.ref_cities), 1),
-  EXISTS (SELECT 1 FROM solar_app.ref_cities)
-);
+-- Forward-only identity sync: advance only when sequence is behind MAX(id).
+-- Leave sequence unchanged when already ahead (gaps from CACHE/concurrency are OK).
+SELECT CASE
+  WHEN seq_meta.next_expected > seq_meta.max_id THEN seq_meta.next_expected
+  ELSE setval(seq_meta.seq_reg, seq_meta.max_id, TRUE)
+END
+FROM (
+  SELECT
+    pg_get_serial_sequence('solar_app.ref_cities', 'city_id')::regclass AS seq_reg,
+    (SELECT MAX(city_id) FROM solar_app.ref_cities) AS max_id,
+    CASE
+      WHEN s.is_called THEN s.last_value + 1
+      ELSE s.last_value
+    END AS next_expected
+  FROM pg_sequences AS s
+  WHERE pg_get_serial_sequence('solar_app.ref_cities', 'city_id') IS NOT NULL
+    AND (
+      (s.schemaname || '.' || s.sequencename) = pg_get_serial_sequence('solar_app.ref_cities', 'city_id')
+      OR s.sequencename = split_part(
+           pg_get_serial_sequence('solar_app.ref_cities', 'city_id'),
+           '.',
+           2
+         )
+    )
+) AS seq_meta
+WHERE seq_meta.max_id IS NOT NULL;
 -- =============================================================================
 -- Source: reference-data/sql/06_ref_pincodes.sql
 -- =============================================================================
@@ -3001,11 +3106,32 @@ ON CONFLICT (pincode_id) DO UPDATE SET
   updated_by = EXCLUDED.updated_by,
   updated_on = CURRENT_TIMESTAMP;
 
-SELECT setval(
-  pg_get_serial_sequence('solar_app.ref_pincodes', 'pincode_id'),
-  COALESCE((SELECT MAX(pincode_id) FROM solar_app.ref_pincodes), 1),
-  EXISTS (SELECT 1 FROM solar_app.ref_pincodes)
-);
+-- Forward-only identity sync: advance only when sequence is behind MAX(id).
+-- Leave sequence unchanged when already ahead (gaps from CACHE/concurrency are OK).
+SELECT CASE
+  WHEN seq_meta.next_expected > seq_meta.max_id THEN seq_meta.next_expected
+  ELSE setval(seq_meta.seq_reg, seq_meta.max_id, TRUE)
+END
+FROM (
+  SELECT
+    pg_get_serial_sequence('solar_app.ref_pincodes', 'pincode_id')::regclass AS seq_reg,
+    (SELECT MAX(pincode_id) FROM solar_app.ref_pincodes) AS max_id,
+    CASE
+      WHEN s.is_called THEN s.last_value + 1
+      ELSE s.last_value
+    END AS next_expected
+  FROM pg_sequences AS s
+  WHERE pg_get_serial_sequence('solar_app.ref_pincodes', 'pincode_id') IS NOT NULL
+    AND (
+      (s.schemaname || '.' || s.sequencename) = pg_get_serial_sequence('solar_app.ref_pincodes', 'pincode_id')
+      OR s.sequencename = split_part(
+           pg_get_serial_sequence('solar_app.ref_pincodes', 'pincode_id'),
+           '.',
+           2
+         )
+    )
+) AS seq_meta
+WHERE seq_meta.max_id IS NOT NULL;
 -- =============================================================================
 -- Source: reference-data/sql/07_ref_discoms.sql
 -- =============================================================================
@@ -3097,11 +3223,32 @@ ON CONFLICT (discom_id) DO UPDATE SET
   updated_by = EXCLUDED.updated_by,
   updated_on = CURRENT_TIMESTAMP;
 
-SELECT setval(
-  pg_get_serial_sequence('solar_app.ref_discoms', 'discom_id'),
-  COALESCE((SELECT MAX(discom_id) FROM solar_app.ref_discoms), 1),
-  EXISTS (SELECT 1 FROM solar_app.ref_discoms)
-);
+-- Forward-only identity sync: advance only when sequence is behind MAX(id).
+-- Leave sequence unchanged when already ahead (gaps from CACHE/concurrency are OK).
+SELECT CASE
+  WHEN seq_meta.next_expected > seq_meta.max_id THEN seq_meta.next_expected
+  ELSE setval(seq_meta.seq_reg, seq_meta.max_id, TRUE)
+END
+FROM (
+  SELECT
+    pg_get_serial_sequence('solar_app.ref_discoms', 'discom_id')::regclass AS seq_reg,
+    (SELECT MAX(discom_id) FROM solar_app.ref_discoms) AS max_id,
+    CASE
+      WHEN s.is_called THEN s.last_value + 1
+      ELSE s.last_value
+    END AS next_expected
+  FROM pg_sequences AS s
+  WHERE pg_get_serial_sequence('solar_app.ref_discoms', 'discom_id') IS NOT NULL
+    AND (
+      (s.schemaname || '.' || s.sequencename) = pg_get_serial_sequence('solar_app.ref_discoms', 'discom_id')
+      OR s.sequencename = split_part(
+           pg_get_serial_sequence('solar_app.ref_discoms', 'discom_id'),
+           '.',
+           2
+         )
+    )
+) AS seq_meta
+WHERE seq_meta.max_id IS NOT NULL;
 -- =============================================================================
 -- Source: reference-data/sql/08_ref_data_categories.sql
 -- =============================================================================
@@ -3155,11 +3302,32 @@ ON CONFLICT (category_id) DO UPDATE SET
   updated_by = EXCLUDED.updated_by,
   updated_on = CURRENT_TIMESTAMP;
 
-SELECT setval(
-  pg_get_serial_sequence('solar_app.ref_data_categories', 'category_id'),
-  COALESCE((SELECT MAX(category_id) FROM solar_app.ref_data_categories), 1),
-  EXISTS (SELECT 1 FROM solar_app.ref_data_categories)
-);
+-- Forward-only identity sync: advance only when sequence is behind MAX(id).
+-- Leave sequence unchanged when already ahead (gaps from CACHE/concurrency are OK).
+SELECT CASE
+  WHEN seq_meta.next_expected > seq_meta.max_id THEN seq_meta.next_expected
+  ELSE setval(seq_meta.seq_reg, seq_meta.max_id, TRUE)
+END
+FROM (
+  SELECT
+    pg_get_serial_sequence('solar_app.ref_data_categories', 'category_id')::regclass AS seq_reg,
+    (SELECT MAX(category_id) FROM solar_app.ref_data_categories) AS max_id,
+    CASE
+      WHEN s.is_called THEN s.last_value + 1
+      ELSE s.last_value
+    END AS next_expected
+  FROM pg_sequences AS s
+  WHERE pg_get_serial_sequence('solar_app.ref_data_categories', 'category_id') IS NOT NULL
+    AND (
+      (s.schemaname || '.' || s.sequencename) = pg_get_serial_sequence('solar_app.ref_data_categories', 'category_id')
+      OR s.sequencename = split_part(
+           pg_get_serial_sequence('solar_app.ref_data_categories', 'category_id'),
+           '.',
+           2
+         )
+    )
+) AS seq_meta
+WHERE seq_meta.max_id IS NOT NULL;
 -- =============================================================================
 -- Source: reference-data/sql/09_ref_data.sql
 -- =============================================================================
@@ -3285,7 +3453,8 @@ VALUES
   (102, 21, 'TKT_EN_ROUTE', 'Technician En-Route', NULL, NULL, 3, '{}'::jsonb, TRUE, 'SYSTEM', 'SYSTEM'),
   (103, 21, 'TKT_ON_SITE', 'On-Site Inspection', NULL, NULL, 4, '{}'::jsonb, TRUE, 'SYSTEM', 'SYSTEM'),
   (104, 21, 'TKT_PARTS', 'Parts Replaced', NULL, NULL, 5, '{}'::jsonb, TRUE, 'SYSTEM', 'SYSTEM'),
-  (105, 21, 'TKT_RESOLVED', 'Resolved & Closed', NULL, NULL, 6, '{}'::jsonb, TRUE, 'SYSTEM', 'SYSTEM'),
+  (105, 21, 'TKT_RESOLVED', 'Resolved – Awaiting User Confirmation', NULL, NULL, 6, '{}'::jsonb, TRUE, 'SYSTEM', 'SYSTEM'),
+  (188, 21, 'TKT_CLOSED', 'Closed', NULL, NULL, 7, '{}'::jsonb, TRUE, 'SYSTEM', 'SYSTEM'),
   (106, 22, 'JOB_QUEUED', 'Queued', NULL, NULL, 1, '{}'::jsonb, TRUE, 'SYSTEM', 'SYSTEM'),
   (107, 22, 'JOB_ACCEPTED', 'Accepted', NULL, NULL, 2, '{}'::jsonb, TRUE, 'SYSTEM', 'SYSTEM'),
   (108, 22, 'JOB_REJECTED', 'Rejected', NULL, NULL, 3, '{}'::jsonb, TRUE, 'SYSTEM', 'SYSTEM'),
@@ -3339,8 +3508,7 @@ VALUES
   (156, 32, 'ORD_CANCELLED', 'Cancelled', NULL, NULL, 6, '{}'::jsonb, TRUE, 'SYSTEM', 'SYSTEM'),
   (157, 33, 'FU_CALL', 'Phone Call', NULL, NULL, 1, '{}'::jsonb, TRUE, 'SYSTEM', 'SYSTEM'),
   (158, 33, 'FU_VISIT', 'Site / Office Visit', NULL, NULL, 2, '{}'::jsonb, TRUE, 'SYSTEM', 'SYSTEM'),
-  (159, 33, 'FU_WHATSAPP', 'WhatsApp', NULL, NULL, 3, '{}'::jsonb, TRUE, 'SYSTEM', 'SYSTEM'),
-  (160, 33, 'FU_EMAIL', 'Email', NULL, NULL, 4, '{}'::jsonb, TRUE, 'SYSTEM', 'SYSTEM')
+  (159, 33, 'FU_WHATSAPP', 'WhatsApp', NULL, NULL, 3, '{}'::jsonb, TRUE, 'SYSTEM', 'SYSTEM')
 ON CONFLICT (ref_data_id) DO UPDATE SET
   category_id = EXCLUDED.category_id,
   data_code = EXCLUDED.data_code,
@@ -3356,6 +3524,7 @@ ON CONFLICT (ref_data_id) DO UPDATE SET
 INSERT INTO solar_app.ref_data (ref_data_id, category_id, data_code, data_value, data_desc, parent_ref_data_id, sort_order, extra_json, active_ind, created_by, updated_by)
 OVERRIDING SYSTEM VALUE
 VALUES
+  (160, 33, 'FU_EMAIL', 'Email', NULL, NULL, 4, '{}'::jsonb, TRUE, 'SYSTEM', 'SYSTEM'),
   (161, 34, 'FU_OPEN', 'Open', NULL, NULL, 1, '{}'::jsonb, TRUE, 'SYSTEM', 'SYSTEM'),
   (162, 34, 'FU_DONE', 'Completed', NULL, NULL, 2, '{}'::jsonb, TRUE, 'SYSTEM', 'SYSTEM'),
   (163, 34, 'FU_CANCELLED', 'Cancelled', NULL, NULL, 3, '{}'::jsonb, TRUE, 'SYSTEM', 'SYSTEM'),
@@ -3395,11 +3564,32 @@ ON CONFLICT (ref_data_id) DO UPDATE SET
   updated_by = EXCLUDED.updated_by,
   updated_on = CURRENT_TIMESTAMP;
 
-SELECT setval(
-  pg_get_serial_sequence('solar_app.ref_data', 'ref_data_id'),
-  COALESCE((SELECT MAX(ref_data_id) FROM solar_app.ref_data), 1),
-  EXISTS (SELECT 1 FROM solar_app.ref_data)
-);
+-- Forward-only identity sync: advance only when sequence is behind MAX(id).
+-- Leave sequence unchanged when already ahead (gaps from CACHE/concurrency are OK).
+SELECT CASE
+  WHEN seq_meta.next_expected > seq_meta.max_id THEN seq_meta.next_expected
+  ELSE setval(seq_meta.seq_reg, seq_meta.max_id, TRUE)
+END
+FROM (
+  SELECT
+    pg_get_serial_sequence('solar_app.ref_data', 'ref_data_id')::regclass AS seq_reg,
+    (SELECT MAX(ref_data_id) FROM solar_app.ref_data) AS max_id,
+    CASE
+      WHEN s.is_called THEN s.last_value + 1
+      ELSE s.last_value
+    END AS next_expected
+  FROM pg_sequences AS s
+  WHERE pg_get_serial_sequence('solar_app.ref_data', 'ref_data_id') IS NOT NULL
+    AND (
+      (s.schemaname || '.' || s.sequencename) = pg_get_serial_sequence('solar_app.ref_data', 'ref_data_id')
+      OR s.sequencename = split_part(
+           pg_get_serial_sequence('solar_app.ref_data', 'ref_data_id'),
+           '.',
+           2
+         )
+    )
+) AS seq_meta
+WHERE seq_meta.max_id IS NOT NULL;
 -- =============================================================================
 -- Source: reference-data/sql/10_ref_dropdown_config.sql
 -- =============================================================================
@@ -3470,15 +3660,52 @@ ON CONFLICT (dropdown_config_id) DO UPDATE SET
   updated_by = EXCLUDED.updated_by,
   updated_on = CURRENT_TIMESTAMP;
 
-SELECT setval(
-  pg_get_serial_sequence('solar_app.ref_dropdown_config', 'dropdown_config_id'),
-  COALESCE((SELECT MAX(dropdown_config_id) FROM solar_app.ref_dropdown_config), 1),
-  EXISTS (SELECT 1 FROM solar_app.ref_dropdown_config)
-);
+-- Forward-only identity sync: advance only when sequence is behind MAX(id).
+-- Leave sequence unchanged when already ahead (gaps from CACHE/concurrency are OK).
+SELECT CASE
+  WHEN seq_meta.next_expected > seq_meta.max_id THEN seq_meta.next_expected
+  ELSE setval(seq_meta.seq_reg, seq_meta.max_id, TRUE)
+END
+FROM (
+  SELECT
+    pg_get_serial_sequence('solar_app.ref_dropdown_config', 'dropdown_config_id')::regclass AS seq_reg,
+    (SELECT MAX(dropdown_config_id) FROM solar_app.ref_dropdown_config) AS max_id,
+    CASE
+      WHEN s.is_called THEN s.last_value + 1
+      ELSE s.last_value
+    END AS next_expected
+  FROM pg_sequences AS s
+  WHERE pg_get_serial_sequence('solar_app.ref_dropdown_config', 'dropdown_config_id') IS NOT NULL
+    AND (
+      (s.schemaname || '.' || s.sequencename) = pg_get_serial_sequence('solar_app.ref_dropdown_config', 'dropdown_config_id')
+      OR s.sequencename = split_part(
+           pg_get_serial_sequence('solar_app.ref_dropdown_config', 'dropdown_config_id'),
+           '.',
+           2
+         )
+    )
+) AS seq_meta
+WHERE seq_meta.max_id IS NOT NULL;
 -- =============================================================================
 -- Source: reference-data/sql/11_ref_business_parameters.sql
 -- =============================================================================
--- No approved deployment configuration is currently defined for solar_app.ref_business_parameters.
+INSERT INTO solar_app.ref_business_parameters (parameter_code, parameter_name, value_type, numeric_value, text_value, boolean_value, json_value, parameter_unit, parameter_desc, admin_manageable_ind, effective_from, effective_to, active_ind, created_by, updated_by)
+VALUES
+  ('COMPLAINT_MEDIA_MAX_COUNT', 'Complaint media attachment maximum', 'NUMERIC', 4, NULL, NULL, NULL, 'COUNT', 'Maximum photos/videos per complaint ticket (M6.2 OPEN-T3).', TRUE, '2026-01-01', NULL, TRUE, 'SYSTEM', 'SYSTEM')
+ON CONFLICT (parameter_code, effective_from) DO UPDATE SET
+  parameter_name = EXCLUDED.parameter_name,
+  value_type = EXCLUDED.value_type,
+  numeric_value = EXCLUDED.numeric_value,
+  text_value = EXCLUDED.text_value,
+  boolean_value = EXCLUDED.boolean_value,
+  json_value = EXCLUDED.json_value,
+  parameter_unit = EXCLUDED.parameter_unit,
+  parameter_desc = EXCLUDED.parameter_desc,
+  admin_manageable_ind = EXCLUDED.admin_manageable_ind,
+  effective_to = EXCLUDED.effective_to,
+  active_ind = EXCLUDED.active_ind,
+  updated_by = EXCLUDED.updated_by,
+  updated_on = CURRENT_TIMESTAMP;
 -- =============================================================================
 -- Source: reference-data/sql/12_ref_subsidy_schemes.sql
 -- =============================================================================
@@ -3524,11 +3751,32 @@ ON CONFLICT (checklist_item_id) DO UPDATE SET
   updated_by = EXCLUDED.updated_by,
   updated_on = CURRENT_TIMESTAMP;
 
-SELECT setval(
-  pg_get_serial_sequence('solar_app.ref_checklist_items', 'checklist_item_id'),
-  COALESCE((SELECT MAX(checklist_item_id) FROM solar_app.ref_checklist_items), 1),
-  EXISTS (SELECT 1 FROM solar_app.ref_checklist_items)
-);
+-- Forward-only identity sync: advance only when sequence is behind MAX(id).
+-- Leave sequence unchanged when already ahead (gaps from CACHE/concurrency are OK).
+SELECT CASE
+  WHEN seq_meta.next_expected > seq_meta.max_id THEN seq_meta.next_expected
+  ELSE setval(seq_meta.seq_reg, seq_meta.max_id, TRUE)
+END
+FROM (
+  SELECT
+    pg_get_serial_sequence('solar_app.ref_checklist_items', 'checklist_item_id')::regclass AS seq_reg,
+    (SELECT MAX(checklist_item_id) FROM solar_app.ref_checklist_items) AS max_id,
+    CASE
+      WHEN s.is_called THEN s.last_value + 1
+      ELSE s.last_value
+    END AS next_expected
+  FROM pg_sequences AS s
+  WHERE pg_get_serial_sequence('solar_app.ref_checklist_items', 'checklist_item_id') IS NOT NULL
+    AND (
+      (s.schemaname || '.' || s.sequencename) = pg_get_serial_sequence('solar_app.ref_checklist_items', 'checklist_item_id')
+      OR s.sequencename = split_part(
+           pg_get_serial_sequence('solar_app.ref_checklist_items', 'checklist_item_id'),
+           '.',
+           2
+         )
+    )
+) AS seq_meta
+WHERE seq_meta.max_id IS NOT NULL;
 -- =============================================================================
 -- Source: reference-data/sql/17_ref_office_locations.sql
 -- =============================================================================

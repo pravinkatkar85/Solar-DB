@@ -123,7 +123,8 @@ VALUES
   (102, 21, 'TKT_EN_ROUTE', 'Technician En-Route', NULL, NULL, 3, '{}'::jsonb, TRUE, 'SYSTEM', 'SYSTEM'),
   (103, 21, 'TKT_ON_SITE', 'On-Site Inspection', NULL, NULL, 4, '{}'::jsonb, TRUE, 'SYSTEM', 'SYSTEM'),
   (104, 21, 'TKT_PARTS', 'Parts Replaced', NULL, NULL, 5, '{}'::jsonb, TRUE, 'SYSTEM', 'SYSTEM'),
-  (105, 21, 'TKT_RESOLVED', 'Resolved & Closed', NULL, NULL, 6, '{}'::jsonb, TRUE, 'SYSTEM', 'SYSTEM'),
+  (105, 21, 'TKT_RESOLVED', 'Resolved – Awaiting User Confirmation', NULL, NULL, 6, '{}'::jsonb, TRUE, 'SYSTEM', 'SYSTEM'),
+  (188, 21, 'TKT_CLOSED', 'Closed', NULL, NULL, 7, '{}'::jsonb, TRUE, 'SYSTEM', 'SYSTEM'),
   (106, 22, 'JOB_QUEUED', 'Queued', NULL, NULL, 1, '{}'::jsonb, TRUE, 'SYSTEM', 'SYSTEM'),
   (107, 22, 'JOB_ACCEPTED', 'Accepted', NULL, NULL, 2, '{}'::jsonb, TRUE, 'SYSTEM', 'SYSTEM'),
   (108, 22, 'JOB_REJECTED', 'Rejected', NULL, NULL, 3, '{}'::jsonb, TRUE, 'SYSTEM', 'SYSTEM'),
@@ -177,8 +178,7 @@ VALUES
   (156, 32, 'ORD_CANCELLED', 'Cancelled', NULL, NULL, 6, '{}'::jsonb, TRUE, 'SYSTEM', 'SYSTEM'),
   (157, 33, 'FU_CALL', 'Phone Call', NULL, NULL, 1, '{}'::jsonb, TRUE, 'SYSTEM', 'SYSTEM'),
   (158, 33, 'FU_VISIT', 'Site / Office Visit', NULL, NULL, 2, '{}'::jsonb, TRUE, 'SYSTEM', 'SYSTEM'),
-  (159, 33, 'FU_WHATSAPP', 'WhatsApp', NULL, NULL, 3, '{}'::jsonb, TRUE, 'SYSTEM', 'SYSTEM'),
-  (160, 33, 'FU_EMAIL', 'Email', NULL, NULL, 4, '{}'::jsonb, TRUE, 'SYSTEM', 'SYSTEM')
+  (159, 33, 'FU_WHATSAPP', 'WhatsApp', NULL, NULL, 3, '{}'::jsonb, TRUE, 'SYSTEM', 'SYSTEM')
 ON CONFLICT (ref_data_id) DO UPDATE SET
   category_id = EXCLUDED.category_id,
   data_code = EXCLUDED.data_code,
@@ -194,6 +194,7 @@ ON CONFLICT (ref_data_id) DO UPDATE SET
 INSERT INTO solar_app.ref_data (ref_data_id, category_id, data_code, data_value, data_desc, parent_ref_data_id, sort_order, extra_json, active_ind, created_by, updated_by)
 OVERRIDING SYSTEM VALUE
 VALUES
+  (160, 33, 'FU_EMAIL', 'Email', NULL, NULL, 4, '{}'::jsonb, TRUE, 'SYSTEM', 'SYSTEM'),
   (161, 34, 'FU_OPEN', 'Open', NULL, NULL, 1, '{}'::jsonb, TRUE, 'SYSTEM', 'SYSTEM'),
   (162, 34, 'FU_DONE', 'Completed', NULL, NULL, 2, '{}'::jsonb, TRUE, 'SYSTEM', 'SYSTEM'),
   (163, 34, 'FU_CANCELLED', 'Cancelled', NULL, NULL, 3, '{}'::jsonb, TRUE, 'SYSTEM', 'SYSTEM'),
@@ -233,8 +234,29 @@ ON CONFLICT (ref_data_id) DO UPDATE SET
   updated_by = EXCLUDED.updated_by,
   updated_on = CURRENT_TIMESTAMP;
 
-SELECT setval(
-  pg_get_serial_sequence('solar_app.ref_data', 'ref_data_id'),
-  COALESCE((SELECT MAX(ref_data_id) FROM solar_app.ref_data), 1),
-  EXISTS (SELECT 1 FROM solar_app.ref_data)
-);
+-- Forward-only identity sync: advance only when sequence is behind MAX(id).
+-- Leave sequence unchanged when already ahead (gaps from CACHE/concurrency are OK).
+SELECT CASE
+  WHEN seq_meta.next_expected > seq_meta.max_id THEN seq_meta.next_expected
+  ELSE setval(seq_meta.seq_reg, seq_meta.max_id, TRUE)
+END
+FROM (
+  SELECT
+    pg_get_serial_sequence('solar_app.ref_data', 'ref_data_id')::regclass AS seq_reg,
+    (SELECT MAX(ref_data_id) FROM solar_app.ref_data) AS max_id,
+    CASE
+      WHEN s.is_called THEN s.last_value + 1
+      ELSE s.last_value
+    END AS next_expected
+  FROM pg_sequences AS s
+  WHERE pg_get_serial_sequence('solar_app.ref_data', 'ref_data_id') IS NOT NULL
+    AND (
+      (s.schemaname || '.' || s.sequencename) = pg_get_serial_sequence('solar_app.ref_data', 'ref_data_id')
+      OR s.sequencename = split_part(
+           pg_get_serial_sequence('solar_app.ref_data', 'ref_data_id'),
+           '.',
+           2
+         )
+    )
+) AS seq_meta
+WHERE seq_meta.max_id IS NOT NULL;

@@ -83,8 +83,29 @@ ON CONFLICT (pincode_id) DO UPDATE SET
   updated_by = EXCLUDED.updated_by,
   updated_on = CURRENT_TIMESTAMP;
 
-SELECT setval(
-  pg_get_serial_sequence('solar_app.ref_pincodes', 'pincode_id'),
-  COALESCE((SELECT MAX(pincode_id) FROM solar_app.ref_pincodes), 1),
-  EXISTS (SELECT 1 FROM solar_app.ref_pincodes)
-);
+-- Forward-only identity sync: advance only when sequence is behind MAX(id).
+-- Leave sequence unchanged when already ahead (gaps from CACHE/concurrency are OK).
+SELECT CASE
+  WHEN seq_meta.next_expected > seq_meta.max_id THEN seq_meta.next_expected
+  ELSE setval(seq_meta.seq_reg, seq_meta.max_id, TRUE)
+END
+FROM (
+  SELECT
+    pg_get_serial_sequence('solar_app.ref_pincodes', 'pincode_id')::regclass AS seq_reg,
+    (SELECT MAX(pincode_id) FROM solar_app.ref_pincodes) AS max_id,
+    CASE
+      WHEN s.is_called THEN s.last_value + 1
+      ELSE s.last_value
+    END AS next_expected
+  FROM pg_sequences AS s
+  WHERE pg_get_serial_sequence('solar_app.ref_pincodes', 'pincode_id') IS NOT NULL
+    AND (
+      (s.schemaname || '.' || s.sequencename) = pg_get_serial_sequence('solar_app.ref_pincodes', 'pincode_id')
+      OR s.sequencename = split_part(
+           pg_get_serial_sequence('solar_app.ref_pincodes', 'pincode_id'),
+           '.',
+           2
+         )
+    )
+) AS seq_meta
+WHERE seq_meta.max_id IS NOT NULL;

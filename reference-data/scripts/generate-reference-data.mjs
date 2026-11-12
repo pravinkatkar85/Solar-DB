@@ -1,6 +1,13 @@
 /**
  * Generates Solar-DB reference JSON + SQL from _source geo files and curated masters.
  * Run: node Solar-DB/reference-data/scripts/generate-reference-data.mjs
+ *
+ * Flags:
+ *   --validate-only  Validate baseline/overrides/forward-only helper; write nothing.
+ *   --params-only    Emit business-parameter artifacts + rebundle 03 without touching ref_data.
+ *
+ * Final M6 ref_data (TKT_CLOSED + relabeled TKT_RESOLVED) requires
+ * stable/ref_data_id_overrides.json key TICKET_STATUSES.TKT_CLOSED from live capture.
  */
 import fs from 'fs';
 import path from 'path';
@@ -11,6 +18,9 @@ const ROOT = path.resolve(__dirname, '..');
 const SRC = path.join(ROOT, '_source');
 const JSON_DIR = path.join(ROOT, 'json');
 const SQL_DIR = path.join(ROOT, 'sql');
+const STABLE_DIR = path.join(ROOT, 'stable');
+const BASELINE_PATH = path.join(STABLE_DIR, 'ref_data_id_baseline.json');
+const OVERRIDES_PATH = path.join(STABLE_DIR, 'ref_data_id_overrides.json');
 const SQL_SCRIPTS_DIR = path.resolve(ROOT, '..', 'SQLScripts');
 const LOAD_SCRIPT = path.join(SQL_SCRIPTS_DIR, '03_seed_data.sql');
 
@@ -19,6 +29,13 @@ const AUDIT = {
   created_by: 'SYSTEM',
   updated_by: 'SYSTEM',
 };
+
+const EXPECTED_BASELINE_COUNT = 187;
+const TKT_CLOSED_OVERRIDE_KEY = 'TICKET_STATUSES.TKT_CLOSED';
+
+const argv = new Set(process.argv.slice(2));
+const VALIDATE_ONLY = argv.has('--validate-only');
+const PARAMS_ONLY = argv.has('--params-only');
 
 function norm(s) {
   return String(s || '')
@@ -41,14 +58,202 @@ function esc(v) {
   return `'${String(v).replace(/'/g, "''")}'`;
 }
 
+/**
+ * Forward-only identity sync after OVERRIDING SYSTEM VALUE loads.
+ * Never lowers an ahead sequence (gaps / CACHE / rollbacks are valid).
+ * Does not call nextval. No-op when the table is empty or already ahead of MAX(id).
+ */
 function sqlIdentRestart(table, col) {
   return [
-    'SELECT setval(',
-    `  pg_get_serial_sequence('solar_app.${table}', '${col}'),`,
-    `  COALESCE((SELECT MAX(${col}) FROM solar_app.${table}), 1),`,
-    `  EXISTS (SELECT 1 FROM solar_app.${table})`,
-    ');',
+    '-- Forward-only identity sync: advance only when sequence is behind MAX(id).',
+    '-- Leave sequence unchanged when already ahead (gaps from CACHE/concurrency are OK).',
+    'SELECT CASE',
+    '  WHEN seq_meta.next_expected > seq_meta.max_id THEN seq_meta.next_expected',
+    '  ELSE setval(seq_meta.seq_reg, seq_meta.max_id, TRUE)',
+    'END',
+    'FROM (',
+    '  SELECT',
+    `    pg_get_serial_sequence('solar_app.${table}', '${col}')::regclass AS seq_reg,`,
+    `    (SELECT MAX(${col}) FROM solar_app.${table}) AS max_id,`,
+    '    CASE',
+    '      WHEN s.is_called THEN s.last_value + 1',
+    '      ELSE s.last_value',
+    '    END AS next_expected',
+    '  FROM pg_sequences AS s',
+    `  WHERE pg_get_serial_sequence('solar_app.${table}', '${col}') IS NOT NULL`,
+    '    AND (',
+    `      (s.schemaname || '.' || s.sequencename) = pg_get_serial_sequence('solar_app.${table}', '${col}')`,
+    '      OR s.sequencename = split_part(',
+    `           pg_get_serial_sequence('solar_app.${table}', '${col}'),`,
+    "           '.',",
+    '           2',
+    '         )',
+    '    )',
+    ') AS seq_meta',
+    'WHERE seq_meta.max_id IS NOT NULL;',
   ].join('\n');
+}
+
+function readJsonObject(filePath, label) {
+  if (!fs.existsSync(filePath)) {
+    throw new Error(`${label} not found: ${filePath}`);
+  }
+  const raw = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) {
+    throw new Error(`${label} must be a JSON object: ${filePath}`);
+  }
+  return raw;
+}
+
+function loadIdMap(filePath, label) {
+  const raw = readJsonObject(filePath, label);
+  const map = {};
+  for (const [key, value] of Object.entries(raw)) {
+    if (key.startsWith('_')) continue;
+    if (value === null || value === undefined) continue;
+    const id = Number(value);
+    if (!Number.isInteger(id) || id <= 0) {
+      throw new Error(`${label} has invalid id for ${key}: ${value}`);
+    }
+    map[key] = id;
+  }
+  return map;
+}
+
+function qualifiedRefKey(categoryCode, dataCode) {
+  return `${categoryCode}.${dataCode}`;
+}
+
+function lookupMappedId(categoryCode, dataCode, map) {
+  const qualified = qualifiedRefKey(categoryCode, dataCode);
+  if (Object.prototype.hasOwnProperty.call(map, qualified)) return map[qualified];
+  if (Object.prototype.hasOwnProperty.call(map, dataCode)) return map[dataCode];
+  return undefined;
+}
+
+function validateBaselineIntegrity(baseline) {
+  const errors = [];
+  const entries = Object.entries(baseline);
+  if (entries.length !== EXPECTED_BASELINE_COUNT) {
+    errors.push(
+      `Baseline must contain exactly ${EXPECTED_BASELINE_COUNT} mappings; found ${entries.length}`,
+    );
+  }
+  const seenIds = new Map();
+  for (const [code, id] of entries) {
+    if (!Number.isInteger(id) || id <= 0) {
+      errors.push(`Baseline id for ${code} is invalid: ${id}`);
+      continue;
+    }
+    if (seenIds.has(id)) {
+      errors.push(`Duplicate baseline id ${id}: ${seenIds.get(id)} and ${code}`);
+    } else {
+      seenIds.set(id, code);
+    }
+  }
+  if (baseline.TKT_RESOLVED !== 105) {
+    errors.push(`Baseline TKT_RESOLVED must be 105; found ${baseline.TKT_RESOLVED}`);
+  }
+  if (baseline.JOB_QUEUED !== 106) {
+    errors.push(`Baseline JOB_QUEUED must be 106; found ${baseline.JOB_QUEUED}`);
+  }
+  return errors;
+}
+
+function validateOverrideCollisions(baseline, overrides) {
+  const errors = [];
+  const baselineIds = new Set(Object.values(baseline));
+  const overrideIds = new Map();
+  for (const [key, id] of Object.entries(overrides)) {
+    const bareCode = key.includes('.') ? key.split('.').slice(1).join('.') : key;
+    if (Object.prototype.hasOwnProperty.call(baseline, bareCode) || Object.prototype.hasOwnProperty.call(baseline, key)) {
+      errors.push(`Override ${key} must not remap a baseline code`);
+    }
+    if (baselineIds.has(id)) {
+      errors.push(`Override ${key} id ${id} collides with a baseline id`);
+    }
+    if (overrideIds.has(id)) {
+      errors.push(`Duplicate override id ${id}: ${overrideIds.get(id)} and ${key}`);
+    } else {
+      overrideIds.set(id, key);
+    }
+  }
+  return errors;
+}
+
+/**
+ * Resolve stable ref_data_id values from baseline + overrides.
+ * Fails closed on duplicate ids/codes, missing mappings, remaps, and override collisions.
+ */
+function resolveStableRefData(categories, baseline, overrides) {
+  const errors = [];
+  errors.push(...validateBaselineIntegrity(baseline));
+  errors.push(...validateOverrideCollisions(baseline, overrides));
+
+  const refData = [];
+  const usedIds = new Map();
+  const usedCategoryCodes = new Map();
+  const missing = [];
+
+  for (const cat of categories) {
+    const items = REF_DATA[cat.category_code] || [];
+    items.forEach((item, idx) => {
+      const data_code = item[0];
+      const pairKey = `${cat.category_code}:${data_code}`;
+      if (usedCategoryCodes.has(pairKey)) {
+        errors.push(`Duplicate category/code ${pairKey}`);
+      } else {
+        usedCategoryCodes.set(pairKey, true);
+      }
+
+      const baselineId = lookupMappedId(cat.category_code, data_code, baseline);
+      const overrideId = lookupMappedId(cat.category_code, data_code, overrides);
+      let ref_data_id;
+
+      if (baselineId !== undefined) {
+        if (overrideId !== undefined && overrideId !== baselineId) {
+          errors.push(
+            `Accidental remap for ${cat.category_code}.${data_code}: baseline ${baselineId} vs override ${overrideId}`,
+          );
+        }
+        ref_data_id = baselineId;
+      } else if (overrideId !== undefined) {
+        ref_data_id = overrideId;
+      } else {
+        missing.push(qualifiedRefKey(cat.category_code, data_code));
+        return;
+      }
+
+      if (usedIds.has(ref_data_id)) {
+        errors.push(
+          `Duplicate ref_data_id ${ref_data_id}: ${usedIds.get(ref_data_id)} and ${cat.category_code}.${data_code}`,
+        );
+      } else {
+        usedIds.set(ref_data_id, `${cat.category_code}.${data_code}`);
+      }
+
+      refData.push({
+        ref_data_id,
+        category_id: cat.category_id,
+        category_code: cat.category_code,
+        data_code,
+        data_value: item[1],
+        data_desc: item[2],
+        parent_ref_data_id: null,
+        sort_order: idx + 1,
+        extra_json: {},
+        ...AUDIT,
+      });
+    });
+  }
+
+  for (const key of missing) {
+    errors.push(`Missing ID mapping for new code ${key} (add to ref_data_id_overrides.json after live capture)`);
+  }
+
+  const blockedFinalM6 = missing.includes(TKT_CLOSED_OVERRIDE_KEY) || !Object.prototype.hasOwnProperty.call(overrides, TKT_CLOSED_OVERRIDE_KEY);
+
+  return { refData, errors, missing, blockedFinalM6 };
 }
 
 const STATE_META = [
@@ -545,7 +750,8 @@ const REF_DATA = {
     ['TKT_EN_ROUTE', 'Technician En-Route', null],
     ['TKT_ON_SITE', 'On-Site Inspection', null],
     ['TKT_PARTS', 'Parts Replaced', null],
-    ['TKT_RESOLVED', 'Resolved & Closed', null],
+    ['TKT_RESOLVED', 'Resolved – Awaiting User Confirmation', null],
+    ['TKT_CLOSED', 'Closed', null],
   ],
   JOB_STATUSES: [
     ['JOB_QUEUED', 'Queued', null],
@@ -665,10 +871,24 @@ const REF_DATA = {
   ],
 };
 
-// Deployment-specific business rules intentionally start empty. Populate them
-// only from approved configuration; do not promote former demo values to
-// canonical seed data.
-const BUSINESS_PARAMETERS = [];
+// Canonical deployment parameters (natural-key upsert; never force parameter_id).
+// DEV_* fixtures remain only in SQLScripts/04_seed_development_reference_data.sql.
+const BUSINESS_PARAMETERS = [
+  {
+    parameter_code: 'COMPLAINT_MEDIA_MAX_COUNT',
+    parameter_name: 'Complaint media attachment maximum',
+    value_type: 'NUMERIC',
+    numeric_value: 4,
+    text_value: null,
+    boolean_value: null,
+    json_value: null,
+    parameter_unit: 'COUNT',
+    parameter_desc: 'Maximum photos/videos per complaint ticket (M6.2 OPEN-T3).',
+    admin_manageable_ind: true,
+    effective_from: '2026-01-01',
+    effective_to: null,
+  },
+];
 const SUBSIDY_SCHEMES = [];
 const SUBSIDY_SLABS = [];
 const AMC_PLANS = [];
@@ -743,20 +963,264 @@ function writeSql(file, table, cols, rows, idCol) {
     );
     lines.push('');
   }
+  // OVERRIDING inserts bypass identity; sync forward-only when behind MAX(id).
   if (idCol) lines.push(sqlIdentRestart(table, idCol), '');
   fs.writeFileSync(path.join(SQL_DIR, file), lines.join('\n'), 'utf8');
 }
 
-function main() {
-  fs.mkdirSync(JSON_DIR, { recursive: true });
-  fs.mkdirSync(SQL_DIR, { recursive: true });
-  for (const [directory, extension] of [[JSON_DIR, '.json'], [SQL_DIR, '.sql']]) {
+const BUSINESS_PARAMETER_SQL_COLS = [
+  'parameter_code',
+  'parameter_name',
+  'value_type',
+  'numeric_value',
+  'text_value',
+  'boolean_value',
+  'json_value',
+  'parameter_unit',
+  'parameter_desc',
+  'admin_manageable_ind',
+  'effective_from',
+  'effective_to',
+  'active_ind',
+  'created_by',
+  'updated_by',
+];
+
+/**
+ * Natural-key upsert for ref_business_parameters.
+ * Does not force parameter_id / OVERRIDING — preserves DEV_* and unrelated rows.
+ * No sequence restart: identity assigns ids on insert; ahead sequences stay ahead.
+ */
+function writeBusinessParametersSql(rows) {
+  const file = '11_ref_business_parameters.sql';
+  const header = [
+    '-- Auto-generated. Do not edit by hand; re-run generate-reference-data.mjs',
+    '-- Natural-key upsert: ON CONFLICT (parameter_code, effective_from).',
+    '-- parameter_id is identity-assigned; never forced. Safe alongside script 04 DEV_* rows.',
+    'SET search_path TO solar_app, public;',
+    '',
+  ];
+  const lines = [...header];
+  if (rows.length === 0) {
+    lines.push(
+      '-- No approved deployment configuration is currently defined for solar_app.ref_business_parameters.',
+      '',
+    );
+    fs.writeFileSync(path.join(SQL_DIR, file), lines.join('\n'), 'utf8');
+    return;
+  }
+  const chunk = 80;
+  for (let i = 0; i < rows.length; i += chunk) {
+    const part = rows.slice(i, i + chunk);
+    lines.push(`INSERT INTO solar_app.ref_business_parameters (${BUSINESS_PARAMETER_SQL_COLS.join(', ')})`);
+    lines.push('VALUES');
+    part.forEach((r, idx) => {
+      const vals = BUSINESS_PARAMETER_SQL_COLS.map((c) => esc(r[c]));
+      lines.push(`  (${vals.join(', ')})${idx === part.length - 1 ? '' : ','}`);
+    });
+    const updateColumns = BUSINESS_PARAMETER_SQL_COLS.filter(
+      (col) => col !== 'parameter_code' && col !== 'effective_from' && col !== 'created_by',
+    );
+    lines.push('ON CONFLICT (parameter_code, effective_from) DO UPDATE SET');
+    lines.push(
+      updateColumns
+        .map((col) => `  ${col} = EXCLUDED.${col}`)
+        .concat('  updated_on = CURRENT_TIMESTAMP')
+        .join(',\n') + ';',
+    );
+    lines.push('');
+  }
+  fs.writeFileSync(path.join(SQL_DIR, file), lines.join('\n'), 'utf8');
+}
+
+const SQL_FRAGMENT_FILES = [
+  '01_ref_currencies.sql',
+  '02_ref_countries.sql',
+  '03_ref_states.sql',
+  '04_ref_districts.sql',
+  '05_ref_cities.sql',
+  '06_ref_pincodes.sql',
+  '07_ref_discoms.sql',
+  '08_ref_data_categories.sql',
+  '09_ref_data.sql',
+  '10_ref_dropdown_config.sql',
+  '11_ref_business_parameters.sql',
+  '12_ref_subsidy_schemes.sql',
+  '13_ref_subsidy_slabs.sql',
+  '14_ref_amc_plans.sql',
+  '15_ref_tax_rules.sql',
+  '16_ref_checklist_items.sql',
+  '17_ref_office_locations.sql',
+  '18_ref_visit_charge_slabs.sql',
+];
+
+function writeConsolidatedSeed() {
+  fs.mkdirSync(SQL_SCRIPTS_DIR, { recursive: true });
+  const consolidatedSections = SQL_FRAGMENT_FILES.map((file) => {
+    const content = fs
+      .readFileSync(path.join(SQL_DIR, file), 'utf8')
+      .replace(/^-- Auto-generated\.[^\r\n]*(?:\r?\n)?/, '')
+      .replace(/^-- Natural-key upsert:[^\r\n]*(?:\r?\n)?/, '')
+      .replace(/^-- parameter_id is identity-assigned[^\r\n]*(?:\r?\n)?/, '')
+      .replace(/^SET search_path TO solar_app, public;\s*/m, '')
+      .trim();
+    return `-- =============================================================================\n-- Source: reference-data/sql/${file}\n-- =============================================================================\n${content}`;
+  });
+  fs.writeFileSync(
+    LOAD_SCRIPT,
+    [
+      '-- Self-contained canonical reference-data load in foreign-key dependency order.',
+      '-- Run after Solar-DB/SQLScripts/01_schema.sql has completed successfully.',
+      '-- Generated by reference-data/scripts/generate-reference-data.mjs.',
+      'BEGIN;',
+      'SET LOCAL search_path TO solar_app, public;',
+      '',
+      ...consolidatedSections,
+      '',
+      'COMMIT;',
+      '',
+    ].join('\n'),
+    'utf8',
+  );
+}
+
+function assertBusinessParameterSqlSafe(sqlText) {
+  const checks = [];
+  if (/OVERRIDING\s+SYSTEM\s+VALUE/i.test(sqlText)) {
+    checks.push('business parameter SQL must not use OVERRIDING SYSTEM VALUE');
+  }
+  if (/parameter_id/i.test(sqlText) && /INSERT\s+INTO\s+solar_app\.ref_business_parameters\s*\([^)]*parameter_id/i.test(sqlText)) {
+    checks.push('business parameter SQL must not force parameter_id');
+  }
+  if (sqlText.includes('COMPLAINT_MEDIA_MAX_COUNT') && !/ON CONFLICT\s*\(\s*parameter_code\s*,\s*effective_from\s*\)/i.test(sqlText)) {
+    checks.push('business parameter SQL must upsert on (parameter_code, effective_from)');
+  }
+  if (/setval\s*\(/i.test(sqlText)) {
+    checks.push('business parameter SQL must not call setval (identity inserts need no restart)');
+  }
+  return checks;
+}
+
+function assertForwardOnlyIdentRestart(sampleSql) {
+  const checks = [];
+  if (!/next_expected\s*>\s*seq_meta\.max_id/i.test(sampleSql)) {
+    checks.push('sqlIdentRestart must preserve ahead sequences (next_expected > max_id branch)');
+  }
+  if (/setval\s*\(\s*[^,]+,\s*COALESCE\s*\(\s*\(\s*SELECT\s+MAX/i.test(sampleSql)) {
+    checks.push('sqlIdentRestart must not blindly setval(MAX)');
+  }
+  return checks;
+}
+
+const OVERRIDING_IDENT_RESTARTS = {
+  '01_ref_currencies.sql': ['ref_currencies', 'currency_id'],
+  '02_ref_countries.sql': ['ref_countries', 'country_id'],
+  '03_ref_states.sql': ['ref_states', 'state_id'],
+  '04_ref_districts.sql': ['ref_districts', 'district_id'],
+  '05_ref_cities.sql': ['ref_cities', 'city_id'],
+  '06_ref_pincodes.sql': ['ref_pincodes', 'pincode_id'],
+  '07_ref_discoms.sql': ['ref_discoms', 'discom_id'],
+  '08_ref_data_categories.sql': ['ref_data_categories', 'category_id'],
+  '09_ref_data.sql': ['ref_data', 'ref_data_id'],
+  '10_ref_dropdown_config.sql': ['ref_dropdown_config', 'dropdown_config_id'],
+  '12_ref_subsidy_schemes.sql': ['ref_subsidy_schemes', 'subsidy_scheme_id'],
+  '13_ref_subsidy_slabs.sql': ['ref_subsidy_slabs', 'subsidy_slab_id'],
+  '14_ref_amc_plans.sql': ['ref_amc_plans', 'amc_plan_id'],
+  '15_ref_tax_rules.sql': ['ref_tax_rules', 'tax_rule_id'],
+  '16_ref_checklist_items.sql': ['ref_checklist_items', 'checklist_item_id'],
+  '17_ref_office_locations.sql': ['ref_office_locations', 'office_location_id'],
+  '18_ref_visit_charge_slabs.sql': ['ref_visit_charge_slabs', 'visit_charge_slab_id'],
+};
+
+/**
+ * Upgrade legacy blind setval(MAX) footers in place without rewriting row payloads.
+ * Safe during M6 gate / params-only emits.
+ */
+function upgradeIdentRestartsInPlace() {
+  const legacySetval =
+    /(?:--[^\n]*\n)*SELECT setval\(\s*pg_get_serial_sequence\('solar_app\.[^']+',\s*'[^']+'\),\s*COALESCE\(\(SELECT MAX\([^)]+\) FROM solar_app\.[^)]+\),\s*1\),\s*EXISTS \(SELECT 1 FROM solar_app\.[^)]+\)\s*\);/g;
+  let upgraded = 0;
+  for (const [file, [table, col]] of Object.entries(OVERRIDING_IDENT_RESTARTS)) {
+    const full = path.join(SQL_DIR, file);
+    if (!fs.existsSync(full)) continue;
+    let text = fs.readFileSync(full, 'utf8');
+    if (!/setval\s*\(/i.test(text)) continue;
+    if (/next_expected\s*>\s*seq_meta\.max_id/i.test(text)) continue;
+    const replaced = text.replace(legacySetval, sqlIdentRestart(table, col) + '\n');
+    if (replaced === text) {
+      // Fallback: replace from first SELECT setval to end if legacy pattern whitespace differs
+      const idx = text.lastIndexOf('SELECT setval(');
+      if (idx >= 0) {
+        text = `${text.slice(0, idx).replace(/\s+$/, '\n')}${sqlIdentRestart(table, col)}\n`;
+        fs.writeFileSync(full, text, 'utf8');
+        upgraded += 1;
+      }
+      continue;
+    }
+    fs.writeFileSync(full, replaced, 'utf8');
+    upgraded += 1;
+  }
+  return upgraded;
+}
+
+function clearGeneratedArtifacts() {
+  for (const [directory, extension] of [
+    [JSON_DIR, '.json'],
+    [SQL_DIR, '.sql'],
+  ]) {
+    if (!fs.existsSync(directory)) continue;
     for (const file of fs.readdirSync(directory)) {
       if (file.endsWith(extension)) {
         fs.rmSync(path.join(directory, file));
       }
     }
   }
+}
+
+function main() {
+  const baseline = loadIdMap(BASELINE_PATH, 'ref_data_id_baseline.json');
+  const overrides = loadIdMap(OVERRIDES_PATH, 'ref_data_id_overrides.json');
+
+  const categoriesPreview = REF_CATEGORIES.map((c, i) => ({
+    category_id: i + 1,
+    category_code: c.code,
+  }));
+  const resolvedPreview = resolveStableRefData(categoriesPreview, baseline, overrides);
+  const forwardOnlyChecks = assertForwardOnlyIdentRestart(sqlIdentRestart('ref_data', 'ref_data_id'));
+
+  if (VALIDATE_ONLY) {
+    const allErrors = [...resolvedPreview.errors, ...forwardOnlyChecks];
+    const hardErrors = allErrors.filter((e) => !String(e).includes(TKT_CLOSED_OVERRIDE_KEY));
+    const report = {
+      mode: 'validate-only',
+      baselineCount: Object.keys(baseline).length,
+      overrideCount: Object.keys(overrides).length,
+      blockedFinalM6: resolvedPreview.blockedFinalM6,
+      missing: resolvedPreview.missing,
+      hardErrors,
+      m6GateNotes: allErrors.filter((e) => String(e).includes(TKT_CLOSED_OVERRIDE_KEY)),
+      forwardOnlyOk: forwardOnlyChecks.length === 0,
+      TKT_RESOLVED: baseline.TKT_RESOLVED,
+      JOB_QUEUED: baseline.JOB_QUEUED,
+    };
+    console.log(JSON.stringify(report, null, 2));
+    if (hardErrors.length) {
+      console.error('VALIDATION FAILED');
+      process.exit(1);
+    }
+    if (report.blockedFinalM6) {
+      console.error(
+        `BASELINE OK; FINAL M6 REFERENCE ARTIFACTS BLOCKED: populate ${TKT_CLOSED_OVERRIDE_KEY} in stable/ref_data_id_overrides.json with the live-captured ref_data_id before full generation.`,
+      );
+      process.exit(2);
+    }
+    console.log('VALIDATION OK');
+    return;
+  }
+
+  fs.mkdirSync(JSON_DIR, { recursive: true });
+  fs.mkdirSync(SQL_DIR, { recursive: true });
+  fs.mkdirSync(STABLE_DIR, { recursive: true });
 
   const districtSrc = JSON.parse(fs.readFileSync(path.join(SRC, 'india-states-districts-latest.json'), 'utf8'));
   const citySrc = JSON.parse(fs.readFileSync(path.join(SRC, 'indian-cities.json'), 'utf8'));
@@ -962,26 +1426,35 @@ function main() {
   }));
   const catByCode = Object.fromEntries(categories.map((c) => [c.category_code, c]));
 
-  const refData = [];
-  let refId = 0;
-  for (const cat of categories) {
-    const items = REF_DATA[cat.category_code] || [];
-    items.forEach((item, idx) => {
-      refId += 1;
-      refData.push({
-        ref_data_id: refId,
-        category_id: cat.category_id,
-        category_code: cat.category_code,
-        data_code: item[0],
-        data_value: item[1],
-        data_desc: item[2],
-        parent_ref_data_id: null,
-        sort_order: idx + 1,
-        extra_json: {},
-        ...AUDIT,
-      });
-    });
+  const { refData, errors: refIdErrors, missing, blockedFinalM6 } = resolveStableRefData(
+    categories,
+    baseline,
+    overrides,
+  );
+  const gateErrors = [...refIdErrors, ...forwardOnlyChecks];
+  const onlyMissingTktClosed =
+    blockedFinalM6 &&
+    missing.length === 1 &&
+    missing[0] === TKT_CLOSED_OVERRIDE_KEY &&
+    gateErrors.every((e) => String(e).includes(TKT_CLOSED_OVERRIDE_KEY));
+
+  const hardFailures = onlyMissingTktClosed
+    ? gateErrors.filter((e) => !String(e).includes(TKT_CLOSED_OVERRIDE_KEY))
+    : gateErrors;
+
+  if (hardFailures.length) {
+    console.error('STABLE REF_DATA ID VALIDATION FAILED:');
+    for (const err of hardFailures) console.error(`  - ${err}`);
+    process.exit(1);
   }
+
+  if (blockedFinalM6 && !PARAMS_ONLY && !onlyMissingTktClosed) {
+    console.error('STABLE REF_DATA ID VALIDATION FAILED (blocked M6 with unexpected missing mappings):');
+    for (const err of gateErrors) console.error(`  - ${err}`);
+    process.exit(1);
+  }
+
+  const emitParamsOnly = PARAMS_ONLY || onlyMissingTktClosed;
 
   const dropdowns = [
     { code: 'COUNTRIES', name: 'Countries', source: 'TABLE', table: 'ref_countries', value: 'country_id', label: 'country_name', parent: null, filter: null, sort: 'country_name' },
@@ -1025,8 +1498,8 @@ function main() {
     ...AUDIT,
   }));
 
-  const businessParameterRows = BUSINESS_PARAMETERS.map((row, i) => ({
-    parameter_id: i + 1,
+  // No forced parameter_id — identity assigns on insert; JSON omits surrogate key.
+  const businessParameterRows = BUSINESS_PARAMETERS.map((row) => ({
     ...row,
     ...AUDIT,
   }));
@@ -1082,6 +1555,94 @@ function main() {
     ...AUDIT,
   }));
 
+  if (emitParamsOnly) {
+    const existingRefPath = path.join(JSON_DIR, 'ref_data.json');
+    if (fs.existsSync(existingRefPath)) {
+      const existingRef = JSON.parse(fs.readFileSync(existingRefPath, 'utf8'));
+      const hasClosed = existingRef.some((r) => r.data_code === 'TKT_CLOSED');
+      if (hasClosed || existingRef.length !== EXPECTED_BASELINE_COUNT) {
+        console.error(
+          `ref_data.json is not in pre-M6 baseline form (expected ${EXPECTED_BASELINE_COUNT} rows, no TKT_CLOSED; found ${existingRef.length}, TKT_CLOSED=${hasClosed}).`,
+        );
+        console.error(
+          'Restore json/ref_data.json and sql/09_ref_data.sql to the frozen baseline emit before params-only / M6-gate generation.',
+        );
+        process.exit(1);
+      }
+    }
+
+    writeJson('ref_business_parameters', businessParameterRows);
+    writeBusinessParametersSql(businessParameterRows);
+    const upgradedRestarts = upgradeIdentRestartsInPlace();
+    const paramSql = fs.readFileSync(path.join(SQL_DIR, '11_ref_business_parameters.sql'), 'utf8');
+    const paramSqlErrors = assertBusinessParameterSqlSafe(paramSql);
+    const sample09 = fs.existsSync(path.join(SQL_DIR, '09_ref_data.sql'))
+      ? fs.readFileSync(path.join(SQL_DIR, '09_ref_data.sql'), 'utf8')
+      : '';
+    const restartErrors = sample09 ? assertForwardOnlyIdentRestart(sample09) : [];
+    if (paramSqlErrors.length || restartErrors.length) {
+      console.error('SAFE ARTIFACT CHECK FAILED:');
+      for (const err of [...paramSqlErrors, ...restartErrors]) console.error(`  - ${err}`);
+      process.exit(1);
+    }
+    writeConsolidatedSeed();
+
+    const summaryNote = `# Reference data summary
+
+Generated by \`scripts/generate-reference-data.mjs\` (**params-only / M6 gate**).
+
+## M6 Phase A generator status
+
+- Stable baseline: \`stable/ref_data_id_baseline.json\` (**${Object.keys(baseline).length}** codes; \`TKT_RESOLVED=105\`, \`JOB_QUEUED=106\`).
+- **Final M6 \`ref_data\` artifacts are BLOCKED** until \`${TKT_CLOSED_OVERRIDE_KEY}\` is set from live migration capture.
+- **Not rewritten (row payloads):** \`json/ref_data.json\`, \`sql/09_ref_data.sql\` INSERT values (still 187 rows; pre-\`TKT_CLOSED\`; \`TKT_RESOLVED\` label unchanged in seed).
+- **Regenerated safely:** \`json/ref_business_parameters.json\`, \`sql/11_ref_business_parameters.sql\`, forward-only identity footers on OVERRIDING fragments, and \`../SQLScripts/03_seed_data.sql\`.
+- Business parameter upsert uses natural key \`(parameter_code, effective_from)\` — does **not** force \`parameter_id\` (safe with script 04 \`DEV_*\` rows).
+- \`COMPLAINT_MEDIA_MAX_COUNT\` rows in this emit: **${businessParameterRows.length}**.
+- Identity footers upgraded in place: **${upgradedRestarts}** file(s).
+
+## Record counts (params emit)
+
+| Table | Records | Class | Notes |
+| --- | ---: | --- | --- |
+| \`ref_business_parameters\` | ${businessParameterRows.length} | Deployment configuration | Canonical OPEN-T3 media max; identity id at load time |
+
+Re-run without \`--params-only\` after populating \`stable/ref_data_id_overrides.json\`.
+`;
+    fs.writeFileSync(path.join(ROOT, 'SUMMARY.md'), summaryNote, 'utf8');
+
+    console.log(
+      JSON.stringify(
+        {
+          mode: PARAMS_ONLY ? 'params-only' : 'params-only-due-to-m6-gate',
+          blockedFinalM6: true,
+          missingOverride: TKT_CLOSED_OVERRIDE_KEY,
+          written: [
+            'json/ref_business_parameters.json',
+            'sql/11_ref_business_parameters.sql',
+            'SQLScripts/03_seed_data.sql',
+            'SUMMARY.md',
+            'sql/* forward-only identity footers (in place)',
+          ],
+          notFinal: ['json/ref_data.json row payloads', 'sql/09_ref_data.sql INSERT values', 'TKT_CLOSED', 'TKT_RESOLVED label in seed'],
+          businessParameters: businessParameterRows.length,
+          upgradedIdentRestarts: upgradedRestarts,
+          baselineCount: Object.keys(baseline).length,
+          TKT_RESOLVED: baseline.TKT_RESOLVED,
+          JOB_QUEUED: baseline.JOB_QUEUED,
+        },
+        null,
+        2,
+      ),
+    );
+    console.error(
+      `FINAL M6 REFERENCE ARTIFACTS BLOCKED until ${TKT_CLOSED_OVERRIDE_KEY} is captured from live DB migration.`,
+    );
+    process.exit(2);
+  }
+
+  clearGeneratedArtifacts();
+
   writeJson('ref_currencies', currencies);
   writeJson('ref_countries', countries);
   writeJson('ref_states', states);
@@ -1123,13 +1684,7 @@ function main() {
     dropdownRows,
     'dropdown_config_id',
   );
-  writeSql(
-    '11_ref_business_parameters.sql',
-    'ref_business_parameters',
-    ['parameter_id', 'parameter_code', 'parameter_name', 'value_type', 'numeric_value', 'text_value', 'boolean_value', 'json_value', 'parameter_unit', 'parameter_desc', 'admin_manageable_ind', 'effective_from', 'effective_to', 'active_ind', 'created_by', 'updated_by'],
-    businessParameterRows,
-    'parameter_id',
-  );
+  writeBusinessParametersSql(businessParameterRows);
   writeSql(
     '12_ref_subsidy_schemes.sql',
     'ref_subsidy_schemes',
@@ -1180,51 +1735,15 @@ function main() {
     'visit_charge_slab_id',
   );
 
-  const sqlFiles = [
-    '01_ref_currencies.sql',
-    '02_ref_countries.sql',
-    '03_ref_states.sql',
-    '04_ref_districts.sql',
-    '05_ref_cities.sql',
-    '06_ref_pincodes.sql',
-    '07_ref_discoms.sql',
-    '08_ref_data_categories.sql',
-    '09_ref_data.sql',
-    '10_ref_dropdown_config.sql',
-    '11_ref_business_parameters.sql',
-    '12_ref_subsidy_schemes.sql',
-    '13_ref_subsidy_slabs.sql',
-    '14_ref_amc_plans.sql',
-    '15_ref_tax_rules.sql',
-    '16_ref_checklist_items.sql',
-    '17_ref_office_locations.sql',
-    '18_ref_visit_charge_slabs.sql',
-  ];
-  fs.mkdirSync(SQL_SCRIPTS_DIR, { recursive: true });
-  const consolidatedSections = sqlFiles.map((file) => {
-    const content = fs
-      .readFileSync(path.join(SQL_DIR, file), 'utf8')
-      .replace(/^-- Auto-generated\.[^\r\n]*(?:\r?\n)?/, '')
-      .replace(/^SET search_path TO solar_app, public;\s*/m, '')
-      .trim();
-    return `-- =============================================================================\n-- Source: reference-data/sql/${file}\n-- =============================================================================\n${content}`;
-  });
-  fs.writeFileSync(
-    LOAD_SCRIPT,
-    [
-      '-- Self-contained canonical reference-data load in foreign-key dependency order.',
-      '-- Run after Solar-DB/SQLScripts/01_schema.sql has completed successfully.',
-      '-- Generated by reference-data/scripts/generate-reference-data.mjs.',
-      'BEGIN;',
-      'SET LOCAL search_path TO solar_app, public;',
-      '',
-      ...consolidatedSections,
-      '',
-      'COMMIT;',
-      '',
-    ].join('\n'),
-    'utf8',
-  );
+  const paramSql = fs.readFileSync(path.join(SQL_DIR, '11_ref_business_parameters.sql'), 'utf8');
+  const paramSqlErrors = assertBusinessParameterSqlSafe(paramSql);
+  if (paramSqlErrors.length) {
+    console.error('BUSINESS PARAMETER SQL SAFETY CHECK FAILED:');
+    for (const err of paramSqlErrors) console.error(`  - ${err}`);
+    process.exit(1);
+  }
+
+  writeConsolidatedSeed();
 
   const counts = [
     ['ref_currencies', currencies.length, 'Reference', 'ISO currency metadata; no exchange rates'],
@@ -1235,9 +1754,9 @@ function main() {
     ['ref_pincodes', pincodes.length, 'Reference', 'Representative: all Maharashtra HQ/major-city PINs + state/UT capitals (not full India Post directory)'],
     ['ref_discoms', discoms.length, 'Reference', `PFC/rating-universe DISCOMs; Maharashtra: MSEDCL + BEST + AEML + Tata Power + Torrent Bhiwandi`],
     ['ref_data_categories', categories.length, 'Reference', 'Dropdown category headers'],
-    ['ref_data', refData.length, 'Reference', 'Generic dropdown values'],
+    ['ref_data', refData.length, 'Reference', 'Stable baseline + override ids (no sequential renumber)'],
     ['ref_dropdown_config', dropdownRows.length, 'Reference', 'Allowlisted fn_get_dropdown_data metadata'],
-    ['ref_business_parameters', businessParameterRows.length, 'Deployment configuration', 'No unapproved defaults seeded'],
+    ['ref_business_parameters', businessParameterRows.length, 'Deployment configuration', 'Natural-key upsert; no forced parameter_id'],
     ['ref_subsidy_schemes', subsidySchemeRows.length, 'Deployment configuration', 'No unapproved schemes seeded'],
     ['ref_subsidy_slabs', subsidySlabRows.length, 'Deployment configuration', 'Requires an approved parent scheme'],
     ['ref_amc_plans', amcRows.length, 'Deployment configuration', 'No unapproved prices or plans seeded'],
@@ -1255,6 +1774,12 @@ function main() {
 
 Generated by \`scripts/generate-reference-data.mjs\`.  
 Schema: \`solar_app\`. Load with \`psql -U solar_app_user -d SolarDB -f ../SQLScripts/03_seed_data.sql\` after \`SQLScripts/01_schema.sql\`.
+
+## Stable ref_data IDs
+
+- Baseline map: \`stable/ref_data_id_baseline.json\` (${Object.keys(baseline).length} codes).
+- Overrides: \`stable/ref_data_id_overrides.json\`.
+- \`TKT_RESOLVED=${baseline.TKT_RESOLVED}\`, \`JOB_QUEUED=${baseline.JOB_QUEUED}\`.
 
 ## Record counts
 
@@ -1283,8 +1808,9 @@ Maharashtra DISCOMs seeded: **MSEDCL** (statewide), **BEST** (Mumbai), **AEML** 
 
 | Path | Contents |
 | --- | --- |
+| \`stable/\` | Frozen ref_data id baseline + overrides |
 | \`json/*.json\` | One file per reference table (same IDs as SQL) |
-| \`sql/01\`–\`18_*.sql\` | Idempotent \`INSERT ... OVERRIDING SYSTEM VALUE\` files |
+| \`sql/01\`–\`18_*.sql\` | Idempotent upsert fragments (\`ref_business_parameters\` uses natural key; others use identity OVERRIDING) |
 | \`../SQLScripts/03_seed_data.sql\` | Self-contained transactional reference-data loader |
 | \`_source/\` | Upstream geo JSON (not loaded directly) |
 | \`scripts/generate-reference-data.mjs\` | Regenerator |
@@ -1301,12 +1827,12 @@ Maharashtra DISCOMs seeded: **MSEDCL** (statewide), **BEST** (Mumbai), **AEML** 
 - **Pincodes** are not the full India Post locality file (~19k unique PINs). Expand later if lead capture needs every PIN.
 - **Himachal Praddesh** typo in the cities source is mapped to Himachal Pradesh.
 - Cities dataset has no Sikkim / Ladakh / Lakshadweep towns; those states still have **district-name city** rows.
-- Business parameters, subsidy rules, AMC plans/prices, tax rules, office data, and visit charges remain empty until approved deployment configuration is supplied.
+- Subsidy rules, AMC plans/prices, tax rules, office data, and visit charges remain empty until approved deployment configuration is supplied.
 - Unmatched source cities (unknown state): ${unmatchedCities}. DISCOM rows skipped: ${discomSkip}.
 
 ## Load order vs schema
 
-Do not run these inserts until \`01_schema.sql\` creates the tables. The loader runs all files in one transaction and each populated table is upserted by its stable seed identity.
+Do not run these inserts until \`01_schema.sql\` creates the tables. The loader runs all files in one transaction. \`ref_data\` and most tables upsert by stable seed identity; \`ref_business_parameters\` upserts by \`(parameter_code, effective_from)\`. Identity sequences are synced **forward-only** after OVERRIDING loads.
 `;
 
   fs.writeFileSync(path.join(ROOT, 'SUMMARY.md'), summary, 'utf8');

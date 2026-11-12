@@ -20,3 +20,7 @@ coverage/
 .DS_Store
 Thumbs.db
 
+# Local PostgreSQL custom-format dumps (keep under backups/ or Solar-local-backups locally)
+*.dump
+*.dump.json
+

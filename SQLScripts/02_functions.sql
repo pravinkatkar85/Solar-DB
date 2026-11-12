@@ -32,3 +32,17 @@
 \ir ../DB-Objects/SQLFunctions/solar_app.fn_update_kyc_document_details.sql
 \ir ../DB-Objects/SQLFunctions/solar_app.fn_get_user_profile.sql
 \ir ../DB-Objects/SQLFunctions/solar_app.fn_update_user_profile.sql
+\ir ../DB-Objects/SQLFunctions/solar_app.fn_create_user_details.sql
+\ir ../DB-Objects/SQLFunctions/solar_app.fn_create_technician_details.sql
+\ir ../DB-Objects/SQLFunctions/solar_app.fn_update_technician_details.sql
+\ir ../DB-Objects/SQLFunctions/solar_app.fn_get_technician_details.sql
+\ir ../DB-Objects/SQLFunctions/solar_app.fn_create_job_assignment_details.sql
+\ir ../DB-Objects/SQLFunctions/solar_app.fn_get_job_assignment_details.sql
+\ir ../DB-Objects/SQLFunctions/solar_app.fn_update_job_assignment_details.sql
+\ir ../DB-Objects/SQLFunctions/solar_app.fn_create_invoice_details.sql
+\ir ../DB-Objects/SQLFunctions/solar_app.fn_update_invoice_details.sql
+\ir ../DB-Objects/SQLFunctions/solar_app.fn_get_invoice_details.sql
+\ir ../DB-Objects/SQLFunctions/solar_app.fn_create_payment_details.sql
+\ir ../DB-Objects/SQLFunctions/solar_app.fn_update_payment_details.sql
+\ir ../DB-Objects/SQLFunctions/solar_app.fn_get_payment_details.sql
+

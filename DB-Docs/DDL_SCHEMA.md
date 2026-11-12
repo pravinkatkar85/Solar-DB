@@ -2863,7 +2863,13 @@ Application functions are added one at a time. The source file is `DB-Objects/SQ
 | `fn_create_pin_user` | Implemented. Creates one customer login and stores a bcrypt PIN hash. This is not the Path B `fn_create_user_details` wizard |
 | `fn_create_pin_session` | Implemented. Verifies a mobile number and PIN, then stores a hashed session token in `log_user_sessions` |
 | `fn_update_user_pin` | Implemented. Changes the signed-in user's PIN after the current bcrypt hash matches. Identity is the active session hash, not a payload user id. Administrator reset is not implemented |
-| `fn_create_user_details` (admin Path B) | User + customer + site + equipment + commissioned order |
+| `fn_create_user_details` (admin Path B) | Authored. User + customer + sites + equipment + MANUAL Installed/Commissioned order + site access + `NTF_ACCOUNT_READY`. Do not install until approved |
+| `fn_create_technician_details` | Authored. Admin creates `ROLE_TECHNICIAN` user + 1:1 `technician_details` (`admin_registered`, `REG_ADMIN_POST_INSTALL`, `pin_hash` NULL). Do not install until approved |
+| `fn_update_technician_details` | Authored. Admin updates technician profile, availability, and activation. Do not install until approved |
+| `fn_get_technician_details` | Authored. Admin lists technicians with optional `active_ind` / `is_available` filters. Never returns PIN/auth secrets. Do not install until approved |
+| `fn_create_job_assignment_details` | Authored. Admin assigns `SERVICE_REQUEST` or `SITE_VISIT` to an available technician, creates `JOB_QUEUED`, enqueues assignment notifications. Do not install until approved |
+| `fn_get_job_assignment_details` | Authored. Technician list/detail of owned jobs. Do not install until approved |
+| `fn_update_job_assignment_details` | Authored. Technician ACCEPT / RESCHEDULE / START / COMPLETE. Does not implement `JOB_REJECTED` or create visits. Do not install until approved |
 | `fn_create`/`fn_update` invoice & payment | Admin offline register; customer `fn_get` only |
 | `fn_create`/`fn_update` AMC, milestones, service_request | Admin service master per customer/product/install |
 | `fn_create_notification_details` | Enqueue inbox (+ pending push log); called from other fn_* |
